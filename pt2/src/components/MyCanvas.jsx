@@ -50,15 +50,15 @@ function MyCanvas({ activeTab }) {
 
       {activeTab != "home" && (
         <>
-          <div className="absolute col-span-3 col-start-2 row-start-2 border-white border-2 h-[600px] w-[300px] tab rounded-md">
-            <div className="relative flex flex-row justify-end bg-white w-full p-2  top-0">
-              <div className="text-md mx-4">⚊</div>
-              <div className="text-md mr-4">❒</div>
-              <div className="text-md mr-2">✕</div>
+          <div className="absolute col-span-3 col-start-2 row-start-2 border-secondary border-2 h-[600px] w-[300px] tab rounded-md">
+            <div className="relative flex flex-row bg-secondary w-full p-2 top-0 justify-between">
+              <div className="relative text-2xl font-bold bottom-1">⁘</div>
+              <span className=" text-xl">{activeTab}.exe</span>
+              <div className="text-2xl font-bold bottom-1 relative">⁘</div>
             </div>
             {activeTab === "keys" && (
               <View className="absolute bottom-0 w-[295px] h-[556px]">
-                <Common color={"#d8d8d8"} />
+                <Common color={"#f0e2d3"} />
                 <pointLight position={[0, 10, 0]} intensity={10} />
                 <BoardKey nodes={nodes} materials={materials} />
                 <PerspectiveCamera
@@ -72,7 +72,7 @@ function MyCanvas({ activeTab }) {
             {activeTab === "go" && (
               <View className="absolute bottom-0 w-[295px] h-[556px]">
                 <PerspectiveCamera makeDefault position={[3, -1, 12]} />
-                <Common color={"#d8d8d8"} />
+                <Common color={"#1985A1"} />
                 <Keys2 position={[-0.7, -7.5, 0]} />
               </View>
             )}

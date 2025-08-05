@@ -1,27 +1,33 @@
 import { useState } from "react";
+import { TbCameraSelfie } from "react-icons/tb";
+import { FaRegCircle } from "react-icons/fa6";
+import { VscMultipleWindows } from "react-icons/vsc";
+import { IoMdContact } from "react-icons/io";
+import { FaKeyboard } from "react-icons/fa";
 
 export default function NavBar({ activeTab, setActiveTab }) {
-  const activeStyle = "rounded-t-xl bg-[#b1b1b1] border-none";
+  const activeStyle = "rounded-t-xl bg-primary border-none";
 
   const navItems = [
-    { label: "Portfolio - HOME", key: "home" },
-    { label: "Projects - Keys", key: "keys" },
-    { label: "Projects - Go", key: "go" },
-    { label: "Projects - Others", key: "others" },
-    { label: "About - Contact", key: "contact" },
+    { label: "Portfolio - HOME", key: "home", icon: <TbCameraSelfie /> },
+    { label: "Projects - Keys", key: "keys", icon: <FaKeyboard /> },
+    { label: "Projects - Go", key: "go", icon: <FaRegCircle /> },
+    { label: "Projects - Others", key: "others", icon: <VscMultipleWindows /> },
+    { label: "About - Contact", key: "contact", icon: <IoMdContact /> },
   ];
 
   return (
-    <nav className="bg-[#dfdfdf] w-screen absolute top-0 left-0 z-[100] py-1">
-      <div className="relative float-start flex flex-row top-1">
+    <nav className="bg-secondary w-screen absolute top-0 left-0 z-[100] py-1 text-black">
+      <div className="relative float-start flex flex-row top-1 flex-nowrap">
         {navItems.map((item, index) => (
           <div
             key={item.key}
             onClick={() => setActiveTab(item.key)}
-            className={`text-xl ml-2 p-2 px-6 font-bold cursor-pointer ${
+            className={`md:text-lg ml-4 p-2 px-6 font-medium cursor-pointer flex flex-row hover:bg-[#f0f6fc]${
               activeTab === item.key ? activeStyle : ""
             } ${index !== 0 ? "border-l-2" : ""}`}
           >
+            <span className="relative top-1 pr-2">{item.icon}</span>
             {item.label}
             {activeTab === item.key && (
               <span className="relative left-4">✕</span>
