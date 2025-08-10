@@ -37,13 +37,11 @@ export default function ScrollingText() {
   };
 
   return (
-    <main className="overflow-hidden">
-      <div className="sliderContainer overflow-hidden">
-        <div ref={slider} className="slider">
-          <p ref={firstText}>MARIA ARTUR-</p>
-          <p ref={secondText}>MARIA ARTUR-</p>
-        </div>
+    <div className="sliderContainer font-bold">
+      <div ref={slider} className="slider">
+        <p ref={firstText}>FRONTEND -</p>
+        <p ref={secondText}>FRONTEND -</p>
       </div>
-    </main>
+    </div>
   );
 }

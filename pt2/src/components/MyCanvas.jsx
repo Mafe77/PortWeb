@@ -16,6 +16,7 @@ import {
   EffectComposer,
   HueSaturation,
   DotScreen,
+  Noise,
 } from "@react-three/postprocessing";
 import gsap from "gsap";
 import Draggable from "gsap/src/Draggable";
@@ -26,7 +27,7 @@ function MyCanvas({ activeTab }) {
   gsap.registerPlugin(Draggable, InertiaPlugin);
 
   Draggable.create(".tab", {
-    bounds: ".container",
+    bounds: ".container1",
     inertia: true,
   });
 
@@ -39,57 +40,64 @@ function MyCanvas({ activeTab }) {
             <EffectComposer>
               <HueSaturation saturation={-1} />
               <DotScreen />
+              <Noise opacity={0.2} />
             </EffectComposer>
-            <Keys position={[6, 0, 0]} />
+            <Keys position={[6, -7.5, 0]} />
           </>
         ) : (
-          <Keys position={[0.2, 0, 0]} />
+          <>
+            <Keys position={[0, -7.5, 0]} />
+          </>
         )}
         <PerspectiveCamera makeDefault position={[0, 0, 16]} />
       </View>
 
       {activeTab != "home" && (
         <>
-          <div className="absolute col-span-3 col-start-2 row-start-2 border-secondary border-2 h-[600px] w-[300px] tab rounded-md">
-            <div className="relative flex flex-row bg-secondary w-full p-2 top-0 justify-between">
+          <div className="absolute col-span-3 col-start-2 row-start-2 border-tertuary border-6 h-[600px] w-[300px] tab rounded-md font-display text-white overflow-hidden flex flex-col">
+            {/* Header */}
+            <div className="flex flex-row bg-tertuary w-full p-2 justify-between z-10">
               <div className="relative text-2xl font-bold bottom-1">⁘</div>
               <span className=" text-xl">{activeTab}.exe</span>
               <div className="text-2xl font-bold bottom-1 relative">⁘</div>
             </div>
-            {activeTab === "keys" && (
-              <View className="absolute bottom-0 w-[295px] h-[556px]">
-                <Common color={"#f0e2d3"} />
-                <pointLight position={[0, 10, 0]} intensity={10} />
-                <BoardKey nodes={nodes} materials={materials} />
-                <PerspectiveCamera
-                  makeDefault
-                  position={[-2.7, 7.3, 9]}
-                  lookAt={[BoardKey]}
-                />
-              </View>
-            )}
 
-            {activeTab === "go" && (
-              <View className="absolute bottom-0 w-[295px] h-[556px]">
-                <PerspectiveCamera makeDefault position={[3, -1, 12]} />
-                <Common color={"#1985A1"} />
-                <Keys2 position={[-0.7, -7.5, 0]} />
-              </View>
-            )}
-            {activeTab === "others" && (
-              <View className="absolute bottom-0 w-[295px] h-[556px]">
-                <PerspectiveCamera makeDefault position={[0, 0, 10]} />
-                <Common color={"#d8d8d8"} />
-                <EightBallKey nodes={nodes} materials={materials} />
-              </View>
-            )}
-            {activeTab === "contact" && (
-              <View className="absolute bottom-0 w-[295px] h-[556px]">
-                <PerspectiveCamera makeDefault position={[0, -1, 10]} />
-                <Common color={"#d8d8d8"} />
-                <Keys2 position={[-16, -8.3, 0]} />
-              </View>
-            )}
+            {/* Content area automatically fills remaining height */}
+            <div className="relative flex-1">
+              {activeTab === "keys" && (
+                <View className="absolute inset-0">
+                  <Common color={"#f0e2d3"} />
+                  <pointLight position={[0, 10, 0]} intensity={10} />
+                  <BoardKey nodes={nodes} materials={materials} />
+                  <PerspectiveCamera
+                    makeDefault
+                    position={[-2.7, 7.3, 9]}
+                    lookAt={[BoardKey]}
+                  />
+                </View>
+              )}
+              {activeTab === "go" && (
+                <View className="absolute inset-0">
+                  <PerspectiveCamera makeDefault position={[3, -1, 12]} />
+                  <Common color={"#1985A1"} />
+                  <Keys2 position={[-0.7, -7.5, 0]} />
+                </View>
+              )}
+              {activeTab === "others" && (
+                <View className="absolute inset-0">
+                  <PerspectiveCamera makeDefault position={[0, 0, 10]} />
+                  <Common color={"#d8d8d8"} />
+                  <EightBallKey nodes={nodes} materials={materials} />
+                </View>
+              )}
+              {activeTab === "contact" && (
+                <View className="absolute inset-0">
+                  <PerspectiveCamera makeDefault position={[0, -1, 10]} />
+                  <Common color={"#d8d8d8"} />
+                  <Keys2 position={[-16, -8.3, 0]} />
+                </View>
+              )}
+            </div>
           </div>
         </>
       )}
@@ -106,6 +114,7 @@ function MyCanvas({ activeTab }) {
         }}
         gl={{ alpha: true }}
         eventSource={document.getElementById("root")}
+        className="container1 w-screen h-screen"
       >
         <View.Port />
         <Preload all />
@@ -118,7 +127,7 @@ function Common({ color }) {
   return (
     <>
       {color && <color attach="background" args={[color]} />}
-      <ambientLight intensity={1} />
+      <ambientLight intensity={0.2} />
       <directionalLight intensity={1} />
       <Environment
         files="https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/blue_photo_studio_1k.hdr"
@@ -147,8 +156,8 @@ function Common({ color }) {
             scale={[50, 10, 1]}
           />
           <Lightformer
-            color="white"
-            intensity={0.2}
+            color="gray"
+            intensity={0.4}
             onUpdate={(self) => self.lookAt(0, 0, 0)}
             position={[0, 1, 0]}
             scale={[10, 100, 1]}

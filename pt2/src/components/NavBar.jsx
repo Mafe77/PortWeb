@@ -3,10 +3,19 @@ import { TbCameraSelfie } from "react-icons/tb";
 import { FaRegCircle } from "react-icons/fa6";
 import { VscMultipleWindows } from "react-icons/vsc";
 import { IoMdContact } from "react-icons/io";
-import { FaKeyboard } from "react-icons/fa";
+import { FaKeyboard, FaSignal } from "react-icons/fa";
+import { IoVolumeHigh } from "react-icons/io5";
+import { ImWindows } from "react-icons/im";
 
 export default function NavBar({ activeTab, setActiveTab }) {
-  const activeStyle = "rounded-t-xl bg-primary border-none";
+  const activeStyle = " bg-[#094496] border-none text-white";
+
+  const date = new Date();
+  const showTime = date.getHours() + ":" + date.getMinutes();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+  const day = date.getDate();
+  const showDate = month + "/" + day + "/" + year;
 
   const navItems = [
     { label: "Portfolio - HOME", key: "home", icon: <TbCameraSelfie /> },
@@ -17,28 +26,38 @@ export default function NavBar({ activeTab, setActiveTab }) {
   ];
 
   return (
-    <nav className="bg-secondary w-screen absolute top-0 left-0 z-[100] py-1 text-black">
-      <div className="relative float-start flex flex-row top-1 flex-nowrap">
+    <nav className="bg-tertuary w-screen absolute bottom-0 left-0 py-1 font-display navBar flex justify-between border-r-8">
+      <div className="absolute float-start text-4xl rounded-r-4xl border-y-2 border-r-2 py-3 pl-1 left-0 pr-4 top-0 flex flex-row italic bg-amber-300">
+        <ImWindows className="mr-2 top-0.5 relative" />
+        start
+      </div>
+      <div className="relative left-34 flex flex-row top-1 flex-nowrap">
         {navItems.map((item, index) => (
           <div
             key={item.key}
             onClick={() => setActiveTab(item.key)}
-            className={`md:text-lg ml-4 p-2 px-6 font-medium cursor-pointer flex flex-row hover:bg-[#f0f6fc]${
-              activeTab === item.key ? activeStyle : ""
-            } ${index !== 0 ? "border-l-2" : ""}`}
+            className={`md:text-lg ml-1 p-3 mb-1 px-6 font-medium border-1 rounded-sm cursor-pointer flex flex-row hover:bg-[#cad1d9]
+              ${activeTab === item.key ? activeStyle : ""} 
+            }`}
           >
-            <span className="relative top-1 pr-2">{item.icon}</span>
-            {item.label}
-            {activeTab === item.key && (
-              <span className="relative left-4">✕</span>
-            )}
+            <span
+              className={`relative top-1 pr-2 ${
+                !activeTab ? "text-white" : ""
+              }`}
+            >
+              {item.icon}
+            </span>
+            <span className="">{item.label} </span>
           </div>
         ))}
       </div>
-      <div className="float-end flex flex-row pl-10">
-        <div className="text-2xl mx-10">⚊</div>
-        <div className="text-2xl mr-10">❒</div>
-        <div className="text-2xl mr-10">✕</div>
+      <div className="float-end flex flex-row pl-10 text-secondary pt-2 text-3xl ">
+        <FaSignal className="mr-4 relative top-1.5" />
+        <IoVolumeHigh className="mr-5 relative top-1.5" />
+        <div className="flex flex-col text-sm mr-2 text-center">
+          <span>{showTime}</span>
+          <span>{showDate}</span>
+        </div>
       </div>
     </nav>
   );
