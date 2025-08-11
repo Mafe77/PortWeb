@@ -10,13 +10,6 @@ import { ImWindows } from "react-icons/im";
 export default function NavBar({ activeTab, setActiveTab }) {
   const activeStyle = " bg-[#094496] border-none text-white";
 
-  const date = new Date();
-  const showTime = date.getHours() + ":" + date.getMinutes();
-  const month = date.getMonth() + 1;
-  const year = date.getFullYear();
-  const day = date.getDate();
-  const showDate = month + "/" + day + "/" + year;
-
   const navItems = [
     { label: "Portfolio - HOME", key: "home", icon: <TbCameraSelfie /> },
     { label: "Projects - Keys", key: "keys", icon: <FaKeyboard /> },
@@ -26,7 +19,7 @@ export default function NavBar({ activeTab, setActiveTab }) {
   ];
 
   return (
-    <nav className="bg-tertuary w-screen absolute bottom-0 left-0 py-1 font-display navBar flex justify-between border-r-8">
+    <nav className="bg-tertuary w-screen absolute top-0 left-0 py-1 font-display navBar flex justify-between border-r-8">
       <div className="absolute float-start text-4xl rounded-r-4xl border-y-2 border-r-2 py-3 pl-1 left-0 pr-4 top-0 flex flex-row italic bg-amber-300">
         <ImWindows className="mr-2 top-0.5 relative" />
         start
@@ -50,14 +43,6 @@ export default function NavBar({ activeTab, setActiveTab }) {
             <span className="">{item.label} </span>
           </div>
         ))}
-      </div>
-      <div className="float-end flex flex-row pl-10 text-secondary pt-2 text-3xl ">
-        <FaSignal className="mr-4 relative top-1.5" />
-        <IoVolumeHigh className="mr-5 relative top-1.5" />
-        <div className="flex flex-col text-sm mr-2 text-center">
-          <span>{showTime}</span>
-          <span>{showDate}</span>
-        </div>
       </div>
     </nav>
   );
