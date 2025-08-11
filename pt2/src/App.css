@@ -26,9 +26,9 @@
 } */
 
 body {
-  height: 100vh;
+  height: 200vh;
   margin: 0;
-  overflow: hidden;
+  overflow-x: hidden;
   
   display: flex;
   flex-direction: column;
@@ -46,32 +46,18 @@ body::after {
   top: 0;
   content: '';
   width: 100%;
-  height: 100%;
-  z-index: -1;
+  height: 300%;
   overflow: hidden;
 
   opacity: 40%;
 }
 
 body::before {
-  z-index: -1;
   background: #464646;
   filter: url(#noiseFilter);
 }
 
-.test {
-  background:
-        linear-gradient(to right, #151515 1px, transparent 1px) 0 0,
-        linear-gradient(to right, #151515 1px, transparent 1px) 0 100%,
-        linear-gradient(to left, #151515 1px, transparent 1px) 100% 0,
-        linear-gradient(to left, #151515 1px, transparent 1px) 100% 100%,
-        linear-gradient(to bottom, #151515 1px, transparent 1px) 0 0,
-        linear-gradient(to bottom, #151515 1px, transparent 1px) 100% 0,
-        linear-gradient(to top, #151515 1px, transparent 1px) 0 100%,
-        linear-gradient(to top, #151515 1px, transparent 1px) 100% 100%;
-  background-repeat: no-repeat;
-  background-size: 20px 20px;
-}
+
 
 .navBar::before, .navBar::after {
   position: absolute;

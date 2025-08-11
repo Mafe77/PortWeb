@@ -24,83 +24,53 @@ import InertiaPlugin from "gsap/InertiaPlugin";
 
 function MyCanvas({ activeTab }) {
   const { nodes, materials } = useKeysModel();
-  gsap.registerPlugin(Draggable, InertiaPlugin);
-
-  Draggable.create(".tab", {
-    bounds: ".container1",
-    inertia: true,
-  });
 
   return (
     <>
-      <View className="col-span-5 row-start-1 row-span-5 w-screen h-screen">
+      <View className="col-span-5 row-start-1 row-span-5 w-screen h-screen z-30">
         <Common />
-        {activeTab != "home" ? (
-          <>
-            <EffectComposer>
-              <HueSaturation saturation={-1} />
-              <DotScreen />
-              <Noise opacity={0.2} />
-            </EffectComposer>
-            <Keys position={[6, -7.5, 0]} />
-          </>
-        ) : (
-          <>
-            <Keys position={[0, -7.5, 0]} />
-          </>
-        )}
+        <Keys position={[0, -7.5, 0]} />
+
         <PerspectiveCamera makeDefault position={[0, 0, 16]} />
       </View>
 
-      {activeTab != "home" && (
-        <>
-          <div className="absolute col-span-3 col-start-2 row-start-2 border-secondary border-6 h-[600px] w-[300px] tab rounded-md font-display text-white overflow-hidden flex flex-col">
-            {/* Header */}
-            <div className="flex flex-row bg-secondary w-full p-2 justify-between z-10">
-              <div className="relative text-2xl font-bold bottom-1">⁘</div>
-              <span className=" text-xl">{activeTab}.exe</span>
-              <div className="text-2xl font-bold bottom-1 relative">⁘</div>
-            </div>
+      <div className="flex flex-row justify-between absolute -bottom-250 w-screen">
+        {/* Content area automatically fills remaining height */}
+        <div className="h-[800px] w-[400px] rounded-md z-20 relative">
+          <View className="absolute inset-0">
+            <Common />
+            <pointLight position={[0, 10, 0]} intensity={10} />
+            <BoardKey nodes={nodes} materials={materials} />
+            <PerspectiveCamera
+              makeDefault
+              position={[-2.7, 6.7, 10.5]}
+              lookAt={[BoardKey]}
+            />
+          </View>
+        </div>
 
-            {/* Content area automatically fills remaining height */}
-            <div className="relative flex-1">
-              {activeTab === "keys" && (
-                <View className="absolute inset-0">
-                  <Common color={"#f0e2d3"} />
-                  <pointLight position={[0, 10, 0]} intensity={10} />
-                  <BoardKey nodes={nodes} materials={materials} />
-                  <PerspectiveCamera
-                    makeDefault
-                    position={[-2.7, 7.3, 9]}
-                    lookAt={[BoardKey]}
-                  />
-                </View>
-              )}
-              {activeTab === "go" && (
-                <View className="absolute inset-0">
-                  <PerspectiveCamera makeDefault position={[3, -1, 12]} />
-                  <Common color={"#1985A1"} />
-                  <Keys2 position={[-0.7, -7.5, 0]} />
-                </View>
-              )}
-              {activeTab === "others" && (
-                <View className="absolute inset-0">
-                  <PerspectiveCamera makeDefault position={[0, 0, 10]} />
-                  <Common color={"#d8d8d8"} />
-                  <EightBallKey nodes={nodes} materials={materials} />
-                </View>
-              )}
-              {activeTab === "contact" && (
-                <View className="absolute inset-0">
-                  <PerspectiveCamera makeDefault position={[0, -1, 10]} />
-                  <Common color={"#d8d8d8"} />
-                  <Keys2 position={[-16, -8.3, 0]} />
-                </View>
-              )}
-            </div>
-          </div>
-        </>
-      )}
+        <div className=" h-[800px] w-[400px] rounded-md relative">
+          <View className="absolute inset-0">
+            <PerspectiveCamera makeDefault position={[3, -1.2, 12.5]} />
+            <Common />
+            <Keys2 position={[-0.7, -7.5, 0]} />
+          </View>
+        </div>
+        <div className=" h-[800px] w-[400px] rounded-md relative">
+          <View className="absolute inset-0">
+            <PerspectiveCamera makeDefault position={[0, 0, 12]} />
+            <Common />
+            <EightBallKey nodes={nodes} materials={materials} />
+          </View>
+        </div>
+        <div className=" h-[800px] w-[400px] rounded-md relative">
+          <View className="absolute inset-0">
+            <PerspectiveCamera makeDefault position={[0, -1, 10]} />
+            <Common />
+            <Keys2 position={[-16, -8.3, 0]} />
+          </View>
+        </div>
+      </div>
 
       <Canvas
         style={{
@@ -119,6 +89,23 @@ function MyCanvas({ activeTab }) {
         <View.Port />
         <Preload all />
       </Canvas>
+    </>
+  );
+}
+
+function board() {
+  return (
+    <>
+      <View className="absolute inset-0">
+        <Common color={"#f0e2d3"} />
+        <pointLight position={[0, 10, 0]} intensity={10} />
+        <BoardKey nodes={nodes} materials={materials} />
+        <PerspectiveCamera
+          makeDefault
+          position={[-2.7, 7.3, 9]}
+          lookAt={[BoardKey]}
+        />
+      </View>
     </>
   );
 }
