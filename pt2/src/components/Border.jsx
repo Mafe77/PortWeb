@@ -14,7 +14,7 @@ export default function FancyBorder() {
       <div className="fixed top-34 right-10 w-4 h-4 bg-black rotate-45"></div>
 
       {/* Bottom border */}
-      <div className="absolute bottom-18 left-12 w-96 border-b-3 border-black"></div>
+      {/* <div className="absolute bottom-18 left-12 w-96 border-b-3 border-black"></div> */}
       <div className="text-9xl font-bold absolute bottom-18 right-14">
         DEVELOPER
       </div>

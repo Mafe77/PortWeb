@@ -8,6 +8,7 @@ import { FaComputer, FaFolderOpen } from "react-icons/fa6";
 import GoDesc from "./components/GoDesc.jsx";
 import NavBarV2 from "./components/NavBarV2.jsx";
 import FancyBorder from "./components/Border.jsx";
+import Horizontal from "./components/Horizontal.jsx";
 
 function App() {
   const [activeTab, setActiveTab] = useState("home");
@@ -21,23 +22,16 @@ function App() {
 
   return (
     <>
-      <div className="relative grid grid-cols-6 auto-rows-min gap-2 w-screen h-screen top-0 left-0">
+      <div className="w-screen h-screen ">
         {/* <NavBar activeTab={activeTab} setActiveTab={setActiveTab} /> */}
         <NavBarV2 />
-        <FancyBorder className="relative w-screen h-screen" />
+        <FancyBorder className="w-screen h-screen" />
         <MyCanvas activeTab={activeTab} />
         {/* <ScrollingText className="absolute inset-0 z-[-1]" /> */}
       </div>
 
-      <div className="w-screen h-screen z-0">
-        <div className="relative top-30 -right-150 border-t-3 w-191 border-black">
-          <div className="text-9xl font-light relative -left-142 -top-20">
-            PROJECTS
-          </div>
-        </div>
-      </div>
-      <div className="w-screen h-screen bg-white z-20 relative"></div>
-      <div className="absolute w-screen h-[20%] bg-red-500 z-20"></div>
+      {/* <div className="w-screen h-screen bg-white z-20 relative"></div> */}
+      {/* <div className="absolute w-screen h-[20%] bg-red-500 z-20"></div> */}
 
       <svg>
         <filter id="noiseFilter">

@@ -12,66 +12,103 @@ import {
 import useKeysModel from "./Keychains/KeyLoader.jsx";
 import { EightBallKey } from "./Keychains/EightBallKey.jsx";
 import { BoardKey } from "./Keychains/BoardKey.jsx";
-import {
-  EffectComposer,
-  HueSaturation,
-  DotScreen,
-  Noise,
-} from "@react-three/postprocessing";
 import gsap from "gsap";
-import Draggable from "gsap/src/Draggable";
-import InertiaPlugin from "gsap/InertiaPlugin";
+import Horizontal from "./Horizontal.jsx";
+import ScrollTrigger from "gsap/src/ScrollTrigger";
+import { useRef, useLayoutEffect } from "react";
 
-function MyCanvas({ activeTab }) {
+gsap.registerPlugin(ScrollTrigger);
+
+export default function MyCanvas({ activeTab }) {
+  const containerRef = useRef();
+
   const { nodes, materials } = useKeysModel();
 
-  return (
-    <>
-      <View className="col-span-5 row-start-1 row-span-5 w-screen h-screen z-30">
-        <Common />
-        <Keys position={[0, -7.5, 0]} />
+  useLayoutEffect(() => {
+    const sections = gsap.utils.toArray(".slide");
 
+    gsap.to(sections, {
+      xPercent: -100 * (sections.length - 1),
+      ease: "none",
+      scrollTrigger: {
+        trigger: containerRef.current,
+        pin: true,
+        scrub: 1,
+        end: () => "+=1000",
+      },
+    });
+
+    return () => {
+      ScrollTrigger.getAll().forEach((st) => st.kill());
+    };
+  }, []);
+
+  return (
+    <div>
+      {/* 3D View */}
+      <View className=" w-screen h-screen z-30 ">
+        <Common />
+        <Keys position={[0, -7.7, 1]} />
         <PerspectiveCamera makeDefault position={[0, 0, 16]} />
       </View>
 
-      <div className="flex flex-row justify-between absolute -bottom-250 w-screen">
-        {/* Content area automatically fills remaining height */}
-        <div className="h-[800px] w-[400px] rounded-md z-20 relative">
-          <View className="absolute inset-0">
-            <Common />
-            <pointLight position={[0, 10, 0]} intensity={10} />
-            <BoardKey nodes={nodes} materials={materials} />
-            <PerspectiveCamera
-              makeDefault
-              position={[-2.7, 6.7, 10.5]}
-              lookAt={[BoardKey]}
-            />
-          </View>
-        </div>
+      {/* Horizontal Scroll Section */}
+      <div
+        ref={containerRef}
+        className="main h-screen overflow-hidden z-0 relative w-screen "
+      >
+        <Horizontal />
+        <div className="horizontal-sliders flex h-screen w-[200%] relative">
+          {/* Slide 1 */}
+          <div className="slide flex-shrink-0 h-[80%] w-[60%] relative border-2 border-purple-600">
+            <div className="relative border-2 text-6xl float-end">Keyboard</div>
+            <View className="absolute inset-0 w-[30%] border-2">
+              <Common />
+              <pointLight position={[0, 10, 0]} intensity={10} />
+              <BoardKey nodes={nodes} materials={materials} />
+              <PerspectiveCamera
+                makeDefault
+                position={[-2.7, 6.7, 10.5]}
+                lookAt={[BoardKey]}
+              />
+            </View>
+          </div>
 
-        <div className=" h-[800px] w-[400px] rounded-md relative">
-          <View className="absolute inset-0">
-            <PerspectiveCamera makeDefault position={[3, -1.2, 12.5]} />
-            <Common />
-            <Keys2 position={[-0.7, -7.5, 0]} />
-          </View>
-        </div>
-        <div className=" h-[800px] w-[400px] rounded-md relative">
-          <View className="absolute inset-0">
-            <PerspectiveCamera makeDefault position={[0, 0, 12]} />
-            <Common />
-            <EightBallKey nodes={nodes} materials={materials} />
-          </View>
-        </div>
-        <div className=" h-[800px] w-[400px] rounded-md relative">
-          <View className="absolute inset-0">
-            <PerspectiveCamera makeDefault position={[0, -1, 10]} />
-            <Common />
-            <Keys2 position={[-16, -8.3, 0]} />
-          </View>
+          {/* Slide 2 */}
+          <div className="slide flex-shrink-0 h-[80%] w-[60%] relative border-2 border-blue-600">
+            <div className="relative border-2 text-6xl float-end">
+              Shape of Go
+            </div>
+            <View className="absolute inset-0 border-2 w-[30%]">
+              <PerspectiveCamera makeDefault position={[3, -1.2, 12.5]} />
+              <Common />
+              <Keys2 position={[-0.7, -7.5, 0]} />
+            </View>
+          </div>
+
+          {/* Slide 3 */}
+          <div className="slide flex-shrink-0 h-[80%] w-[60%] relative border-2 border-red-600">
+            <div className="relative border-2 text-6xl float-end">Others</div>
+            <View className="absolute inset-0 border-2 w-[30%]">
+              <PerspectiveCamera makeDefault position={[0, 0, 12]} />
+              <Common />
+              <EightBallKey nodes={nodes} materials={materials} />
+            </View>
+          </div>
+
+          {/* Slide 4 */}
+          <div className="slide flex-shrink-0 h-[80%] w-[60%] relative border-2 border-green-600">
+            <div className="relative border-2 text-6xl float-end">Info</div>
+            <View className="absolute inset-0 border-2 w-[30%]">
+              <PerspectiveCamera makeDefault position={[0, -1, 10]} />
+              <Common />
+              <Keys2 position={[-16, -8.3, 0]} />
+            </View>
+          </div>
         </div>
       </div>
 
+      {/* Fixed Canvas */}
       <Canvas
         style={{
           position: "fixed",
@@ -81,6 +118,7 @@ function MyCanvas({ activeTab }) {
           right: 0,
           overflow: "hidden",
           background: "transparent",
+          pointerEvents: "none", // prevents blocking scroll
         }}
         gl={{ alpha: true }}
         eventSource={document.getElementById("root")}
@@ -89,24 +127,7 @@ function MyCanvas({ activeTab }) {
         <View.Port />
         <Preload all />
       </Canvas>
-    </>
-  );
-}
-
-function board() {
-  return (
-    <>
-      <View className="absolute inset-0">
-        <Common color={"#f0e2d3"} />
-        <pointLight position={[0, 10, 0]} intensity={10} />
-        <BoardKey nodes={nodes} materials={materials} />
-        <PerspectiveCamera
-          makeDefault
-          position={[-2.7, 7.3, 9]}
-          lookAt={[BoardKey]}
-        />
-      </View>
-    </>
+    </div>
   );
 }
 
@@ -155,4 +176,4 @@ function Common({ color }) {
   );
 }
 
-export default MyCanvas;
+// export default MyCanvas;
