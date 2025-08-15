@@ -15,97 +15,202 @@ import { BoardKey } from "./Keychains/BoardKey.jsx";
 import gsap from "gsap";
 import Horizontal from "./Horizontal.jsx";
 import ScrollTrigger from "gsap/src/ScrollTrigger";
-import { useRef, useLayoutEffect } from "react";
+import ScrollSmoother from "gsap/src/ScrollSmoother";
+import { useRef, useEffect } from "react";
+import { GoKey } from "./Keychains/GoKey.jsx";
+import keyImage from "../assets/placeholder1.png";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
 export default function MyCanvas({ activeTab }) {
-  const containerRef = useRef();
-
   const { nodes, materials } = useKeysModel();
 
-  useLayoutEffect(() => {
-    const sections = gsap.utils.toArray(".slide");
+  const wrapperRef = useRef(null);
+  const contentRef = useRef(null);
 
-    gsap.to(sections, {
-      xPercent: -100 * (sections.length - 1),
-      ease: "none",
+  useEffect(() => {
+    const tl = gsap.timeline({
       scrollTrigger: {
-        trigger: containerRef.current,
+        trigger: ".accordions",
         pin: true,
+        start: "top top",
+        end: "bottom top",
         scrub: 1,
-        end: () => "+=1000",
+        ease: "power1.inOut",
       },
     });
 
+    tl.to(".accordion .text", {
+      height: 0,
+      paddingBottom: 0,
+      opacity: 0,
+      stagger: 0.5,
+    });
+
+    tl.to(
+      ".accordion",
+      {
+        marginBottom: -15,
+        stagger: 0.5,
+      },
+      "<"
+    );
+
+    // ScrollTrigger.refresh();
+
     return () => {
-      ScrollTrigger.getAll().forEach((st) => st.kill());
+      tl.kill();
     };
   }, []);
 
   return (
     <div>
       {/* 3D View */}
-      <View className=" w-screen h-screen z-30 ">
+      <View className="w-screen h-screen z-30">
         <Common />
         <Keys position={[0, -7.7, 1]} />
         <PerspectiveCamera makeDefault position={[0, 0, 16]} />
       </View>
 
-      {/* Horizontal Scroll Section */}
-      <div
-        ref={containerRef}
-        className="main h-screen overflow-hidden z-0 relative w-screen "
-      >
-        <Horizontal />
-        <div className="horizontal-sliders flex h-screen w-[200%] relative">
+      <div ref={contentRef} id="content" className=" z-0 relative w-screen">
+        {/* <Horizontal /> */}
+        <div className="accordions flex flex-col z-0">
           {/* Slide 1 */}
-          <div className="slide flex-shrink-0 h-[80%] w-[60%] relative border-2 border-purple-600">
-            <div className="relative border-2 text-6xl float-end">Keyboard</div>
-            <View className="absolute inset-0 w-[30%] border-2">
-              <Common />
-              <pointLight position={[0, 10, 0]} intensity={10} />
-              <BoardKey nodes={nodes} materials={materials} />
-              <PerspectiveCamera
-                makeDefault
-                position={[-2.7, 6.7, 10.5]}
-                lookAt={[BoardKey]}
-              />
-            </View>
+          <div className="accordion relative flex justify-around p-20">
+            {/* Left Side */}
+            <div className="relative h-[80%] w-[30%]">
+              <View className="inset-0 absolute ">
+                <Common />
+                <BoardKey nodes={nodes} materials={materials} />
+                <PerspectiveCamera
+                  makeDefault
+                  position={[-2.7, 6.7, 10.5]}
+                  lookAt={[BoardKey]}
+                />
+              </View>
+            </div>
+            {/* Right Side */}
+            <div className="slide-right relative w-[70%] h-[80%] flex flex-col pr-22">
+              <h2 className="title text-8xl text-end">Keyboard</h2>
+              <div className="text h-[80%] relative text-center w-full pt-10">
+                <img
+                  src={keyImage}
+                  className="slide-img w-full h-full rounded-lg"
+                ></img>
+              </div>
+              <div className="text-2xl relative text-end top-10">
+                <span className="border rounded-3xl py-2 px-3 m-2 border-white">
+                  React Three Fiber
+                </span>
+                <span className="border rounded-3xl py-2 px-3 m-2 border-white">
+                  Gsap
+                </span>
+                <span className="border rounded-3xl py-2 px-3 m-2 border-white">
+                  JavaScript
+                </span>
+                <span className="border rounded-3xl py-2 px-3 m-2 border-white">
+                  CSS
+                </span>
+              </div>
+            </div>
           </div>
 
           {/* Slide 2 */}
-          <div className="slide flex-shrink-0 h-[80%] w-[60%] relative border-2 border-blue-600">
-            <div className="relative border-2 text-6xl float-end">
-              Shape of Go
+          <div className="accordion relative flex justify-around p-20">
+            {/* Left Side */}
+            <div className="slide-left relative w-[70%] h-[80%] flex flex-col pl-18">
+              <h2 className="title text-8xl">Shape Of Go</h2>
+              <div className="h-[80%] relative text-center w-full pt-10">
+                <img src={keyImage} className="text w-full h-full"></img>
+              </div>
+              <div className="text-2xl relative top-10">
+                <span className="border rounded-3xl py-2 px-3 m-2 border-white">
+                  Three JS
+                </span>
+                <span className="border rounded-3xl py-2 px-3 m-2 border-white">
+                  Gsap
+                </span>
+                <span className="border rounded-3xl py-2 px-3 m-2 border-white">
+                  JavaScript
+                </span>
+                <span className="border rounded-3xl py-2 px-3 m-2 border-white">
+                  CSS
+                </span>
+                <span className="border rounded-3xl py-2 px-3 m-2 border-white">
+                  HTML
+                </span>
+              </div>
             </div>
-            <View className="absolute inset-0 border-2 w-[30%]">
-              <PerspectiveCamera makeDefault position={[3, -1.2, 12.5]} />
-              <Common />
-              <Keys2 position={[-0.7, -7.5, 0]} />
-            </View>
+            {/* Right Side */}
+            <div className="slide-right relative h-[80%] w-[30%] right-20">
+              <View className="absolute inset-0">
+                <PerspectiveCamera makeDefault position={[3.2, 6, 14]} />
+                <Common />
+                <GoKey nodes={nodes} materials={materials} />
+              </View>
+            </div>
           </div>
-
           {/* Slide 3 */}
-          <div className="slide flex-shrink-0 h-[80%] w-[60%] relative border-2 border-red-600">
-            <div className="relative border-2 text-6xl float-end">Others</div>
-            <View className="absolute inset-0 border-2 w-[30%]">
+          <div className="accordion relative flex justify-around p-20">
+            {/* Left Side */}
+            <div className="relative h-[80%] w-[30%]">
+              <View className="inset-0 absolute ">
+                <PerspectiveCamera makeDefault position={[0, 0, 12]} />
+                <Common />
+                <EightBallKey nodes={nodes} materials={materials} />
+              </View>
+            </div>
+            {/* Right Side */}
+            <div className="slide-right relative w-[70%] h-[80%] flex flex-col pr-22">
+              <h2 className="title text-8xl text-end">Others</h2>
+              <div className="text h-full relative text-center w-full pt-10">
+                <img
+                  src={keyImage}
+                  className="slide-img w-full h-full rounded-lg"
+                ></img>
+              </div>
+              <div className="text-2xl relative text-end top-10">
+                <span className="border rounded-3xl py-2 px-3 m-2 border-white">
+                  React Three Fiber
+                </span>
+                <span className="border rounded-3xl py-2 px-3 m-2 border-white">
+                  Gsap
+                </span>
+                <span className="border rounded-3xl py-2 px-3 m-2 border-white">
+                  JavaScript
+                </span>
+                <span className="border rounded-3xl py-2 px-3 m-2 border-white">
+                  CSS
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* Horizontal Scroll Section */}
+
+        {/* Slide 3 */}
+        {/* <div className="slide flex-shrink-0 h-[600px] relative border-2 border-red-600">
+            <div className="slide-title relative border-2 text-6xl float-end">
+              Others
+            </div>
+            <View className="absolute inset-0 border-2 ">
               <PerspectiveCamera makeDefault position={[0, 0, 12]} />
               <Common />
               <EightBallKey nodes={nodes} materials={materials} />
             </View>
-          </div>
+          </div> */}
 
-          {/* Slide 4 */}
-          <div className="slide flex-shrink-0 h-[80%] w-[60%] relative border-2 border-green-600">
-            <div className="relative border-2 text-6xl float-end">Info</div>
-            <View className="absolute inset-0 border-2 w-[30%]">
+        {/* Slide 4
+          <div className="slide flex-shrink-0 h-[80%] relative border-2 border-green-600">
+            <div className="slide-title relative border-2 text-6xl float-end">
+              Info
+            </div>
+            <View className="absolute inset-0 border-2 ">
               <PerspectiveCamera makeDefault position={[0, -1, 10]} />
               <Common />
               <Keys2 position={[-16, -8.3, 0]} />
             </View>
-          </div>
-        </div>
+          </div> */}
       </div>
 
       {/* Fixed Canvas */}
@@ -118,11 +223,13 @@ export default function MyCanvas({ activeTab }) {
           right: 0,
           overflow: "hidden",
           background: "transparent",
-          pointerEvents: "none", // prevents blocking scroll
+          pointerEvents: "none",
         }}
         gl={{ alpha: true }}
         eventSource={document.getElementById("root")}
-        className="container1 w-screen h-screen"
+        className=""
+        id="wrapper"
+        ref={wrapperRef}
       >
         <View.Port />
         <Preload all />
