@@ -22,16 +22,14 @@ function App() {
 
   return (
     <>
-      <div className="w-screen h-screen ">
+      <div className="relative w-screen h-screen ">
         {/* <NavBar activeTab={activeTab} setActiveTab={setActiveTab} /> */}
         <NavBarV2 />
         <FancyBorder className="w-screen h-screen" />
         <MyCanvas activeTab={activeTab} />
         {/* <ScrollingText className="absolute inset-0 z-[-1]" /> */}
+        {/* <div className="relative w-screen h-[200px] bg-red-500 z-20 bottom-0"></div> */}
       </div>
-
-      {/* <div className="w-screen h-screen bg-white z-20 relative"></div> */}
-      {/* <div className="absolute w-screen h-[20%] bg-red-500 z-20"></div> */}
 
       <svg>
         <filter id="noiseFilter">

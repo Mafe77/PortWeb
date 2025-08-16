@@ -1,6 +1,5 @@
 import "../App.css";
 import Keys from "./Keys.jsx";
-import Keys2 from "./iKeys.jsx";
 import { Canvas } from "@react-three/fiber";
 import {
   View,
@@ -22,47 +21,64 @@ import keyImage from "../assets/placeholder1.png";
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
-export default function MyCanvas({ activeTab }) {
+export default function MyCanvas() {
   const { nodes, materials } = useKeysModel();
 
-  const wrapperRef = useRef(null);
   const contentRef = useRef(null);
 
   useEffect(() => {
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: ".accordions",
-        pin: true,
-        start: "top top",
-        end: "bottom top",
-        scrub: 1,
-        ease: "power1.inOut",
-      },
-    });
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: contentRef.current,
+          pin: true,
+          start: "top top",
+          end: "bottom top",
+          scrub: 1,
+          ease: "power1.inOut",
+          markers: true,
+          // toggleActions: "play reverse play reverse",
+        },
+      });
 
-    tl.to(".accordion .text", {
-      height: 0,
-      paddingBottom: 0,
-      opacity: 0,
-      stagger: 0.5,
-    });
+      const accordions = gsap.utils.toArray(".accordion");
 
-    tl.to(
-      ".accordion",
-      {
-        marginBottom: -15,
-        stagger: 0.5,
-      },
-      "<"
-    );
+      accordions.forEach((accordion, i) => {
+        tl.to(
+          accordion.querySelector(".text"),
+          {
+            height: 0,
+            opacity: 0,
+            paddingBottom: 0,
+          },
+          i
+        );
 
-    // ScrollTrigger.refresh();
+        tl.to(
+          accordion,
+          {
+            marginBottom: -15,
+          },
+          i
+        );
+        // tl.to(".accordion", { height: "100px" });
 
-    return () => {
-      tl.kill();
-    };
+        // tl.fromTo(
+        //   accordion,
+        //   { height: "100%" },
+        //   {
+        //     height: "100px",
+        //     clearProps: "height", // 👈 clears inline height when finished
+        //   },
+        //   i
+        // );
+
+        tl.to(contentRef.current, { height: "100vh" });
+      });
+    }, contentRef);
+
+    return () => ctx.revert();
   }, []);
-
   return (
     <div>
       {/* 3D View */}
@@ -72,135 +88,127 @@ export default function MyCanvas({ activeTab }) {
         <PerspectiveCamera makeDefault position={[0, 0, 16]} />
       </View>
 
-      <div ref={contentRef} id="content" className=" z-0 relative w-screen">
-        {/* <Horizontal /> */}
-        <div className="accordions flex flex-col z-0">
-          {/* Slide 1 */}
-          <div className="accordion relative flex justify-around p-20">
-            {/* Left Side */}
-            <div className="relative h-[80%] w-[30%]">
-              <View className="inset-0 absolute ">
-                <Common />
-                <BoardKey nodes={nodes} materials={materials} />
-                <PerspectiveCamera
-                  makeDefault
-                  position={[-2.7, 6.7, 10.5]}
-                  lookAt={[BoardKey]}
-                />
-              </View>
-            </div>
-            {/* Right Side */}
-            <div className="slide-right relative w-[70%] h-[80%] flex flex-col pr-22">
-              <h2 className="title text-8xl text-end">Keyboard</h2>
-              <div className="text h-[80%] relative text-center w-full pt-10">
-                <img
-                  src={keyImage}
-                  className="slide-img w-full h-full rounded-lg"
-                ></img>
-              </div>
-              <div className="text-2xl relative text-end top-10">
-                <span className="border rounded-3xl py-2 px-3 m-2 border-white">
-                  React Three Fiber
-                </span>
-                <span className="border rounded-3xl py-2 px-3 m-2 border-white">
-                  Gsap
-                </span>
-                <span className="border rounded-3xl py-2 px-3 m-2 border-white">
-                  JavaScript
-                </span>
-                <span className="border rounded-3xl py-2 px-3 m-2 border-white">
-                  CSS
-                </span>
-              </div>
-            </div>
+      <div
+        className="accordions flex flex-col z-0 w-screen h-screen relative"
+        ref={contentRef}
+      >
+        <div className=" relative -right-154 top-20 border-t-3 w-191 border-black">
+          <div className="text-9xl font-light relative -left-142 -top-20">
+            PROJECTS
           </div>
-
-          {/* Slide 2 */}
-          <div className="accordion relative flex justify-around p-20">
-            {/* Left Side */}
-            <div className="slide-left relative w-[70%] h-[80%] flex flex-col pl-18">
-              <h2 className="title text-8xl">Shape Of Go</h2>
-              <div className="h-[80%] relative text-center w-full pt-10">
-                <img src={keyImage} className="text w-full h-full"></img>
-              </div>
-              <div className="text-2xl relative top-10">
-                <span className="border rounded-3xl py-2 px-3 m-2 border-white">
-                  Three JS
-                </span>
-                <span className="border rounded-3xl py-2 px-3 m-2 border-white">
-                  Gsap
-                </span>
-                <span className="border rounded-3xl py-2 px-3 m-2 border-white">
-                  JavaScript
-                </span>
-                <span className="border rounded-3xl py-2 px-3 m-2 border-white">
-                  CSS
-                </span>
-                <span className="border rounded-3xl py-2 px-3 m-2 border-white">
-                  HTML
-                </span>
-              </div>
-            </div>
-            {/* Right Side */}
-            <div className="slide-right relative h-[80%] w-[30%] right-20">
-              <View className="absolute inset-0">
-                <PerspectiveCamera makeDefault position={[3.2, 6, 14]} />
-                <Common />
-                <GoKey nodes={nodes} materials={materials} />
-              </View>
-            </div>
+        </div>
+        {/* Slide 1 */}
+        <div className="accordion relative flex justify-around pb-20 pt-10 border-b-2">
+          {/* Left Side */}
+          <div className="relative h-[80%] w-[30%]">
+            <View className="inset-0 absolute ">
+              <Common />
+              <BoardKey nodes={nodes} materials={materials} />
+              <PerspectiveCamera
+                makeDefault
+                position={[-2.7, 6.7, 10.5]}
+                lookAt={[BoardKey]}
+              />
+            </View>
           </div>
-          {/* Slide 3 */}
-          <div className="accordion relative flex justify-around p-20">
-            {/* Left Side */}
-            <div className="relative h-[80%] w-[30%]">
-              <View className="inset-0 absolute ">
-                <PerspectiveCamera makeDefault position={[0, 0, 12]} />
-                <Common />
-                <EightBallKey nodes={nodes} materials={materials} />
-              </View>
+          {/* Right Side */}
+          <div className="relative w-[70%] h-[80%] flex flex-col pr-22">
+            <h2 className="title text-8xl text-end">Keyboard</h2>
+            <div className="text h-[80%] relative text-center w-full pt-10">
+              <img src={keyImage} className="w-full h-full rounded-lg"></img>
             </div>
-            {/* Right Side */}
-            <div className="slide-right relative w-[70%] h-[80%] flex flex-col pr-22">
-              <h2 className="title text-8xl text-end">Others</h2>
-              <div className="text h-full relative text-center w-full pt-10">
-                <img
-                  src={keyImage}
-                  className="slide-img w-full h-full rounded-lg"
-                ></img>
-              </div>
-              <div className="text-2xl relative text-end top-10">
-                <span className="border rounded-3xl py-2 px-3 m-2 border-white">
-                  React Three Fiber
-                </span>
-                <span className="border rounded-3xl py-2 px-3 m-2 border-white">
-                  Gsap
-                </span>
-                <span className="border rounded-3xl py-2 px-3 m-2 border-white">
-                  JavaScript
-                </span>
-                <span className="border rounded-3xl py-2 px-3 m-2 border-white">
-                  CSS
-                </span>
-              </div>
+            <div className="text-2xl relative text-end top-10">
+              <span className="border rounded-3xl py-2 px-3 m-2 border-white">
+                React Three Fiber
+              </span>
+              <span className="border rounded-3xl py-2 px-3 m-2 border-white">
+                Gsap
+              </span>
+              <span className="border rounded-3xl py-2 px-3 m-2 border-white">
+                JavaScript
+              </span>
+              <span className="border rounded-3xl py-2 px-3 m-2 border-white">
+                CSS
+              </span>
             </div>
           </div>
         </div>
-        {/* Horizontal Scroll Section */}
 
-        {/* Slide 3 */}
-        {/* <div className="slide flex-shrink-0 h-[600px] relative border-2 border-red-600">
-            <div className="slide-title relative border-2 text-6xl float-end">
-              Others
+        {/* Slide 2 */}
+        <div className="accordion relative flex justify-around pb-20 pt-10 border-b-2 ">
+          {/* Left Side */}
+          <div className="slide-left relative w-[70%] h-[80%] flex flex-col pl-18">
+            <h2 className="title text-8xl">Shape Of Go</h2>
+            <div className="text h-[80%] relative text-center w-full pt-10">
+              <img src={keyImage} className=" w-full h-full"></img>
             </div>
-            <View className="absolute inset-0 border-2 ">
+            <div className="text-2xl relative top-10">
+              <span className="border rounded-3xl py-2 px-3 m-2 border-white">
+                Three JS
+              </span>
+              <span className="border rounded-3xl py-2 px-3 m-2 border-white">
+                Gsap
+              </span>
+              <span className="border rounded-3xl py-2 px-3 m-2 border-white">
+                JavaScript
+              </span>
+              <span className="border rounded-3xl py-2 px-3 m-2 border-white">
+                CSS
+              </span>
+              <span className="border rounded-3xl py-2 px-3 m-2 border-white">
+                HTML
+              </span>
+            </div>
+          </div>
+          {/* Right Side */}
+          <div className="text relative h-[80%] w-[30%]">
+            <View className="absolute inset-0">
+              <PerspectiveCamera makeDefault position={[3.2, 6, 14]} />
+              <Common />
+              <GoKey nodes={nodes} materials={materials} />
+            </View>
+          </div>
+        </div>
+        {/* Slide 3 */}
+        <div className="accordion relative flex justify-around p-20 ">
+          {/* Left Side */}
+          <div className="relative h-[80%] w-[30%]">
+            <View className="inset-0 absolute ">
               <PerspectiveCamera makeDefault position={[0, 0, 12]} />
               <Common />
               <EightBallKey nodes={nodes} materials={materials} />
             </View>
-          </div> */}
+          </div>
+          {/* Right Side */}
+          <div className="relative w-[70%] h-[80%] flex flex-col pr-22">
+            <h2 className="title text-8xl text-end">Others</h2>
+            <div className="text h-full relative text-center w-full pt-10">
+              <img src={keyImage} className="w-full h-full rounded-lg"></img>
+            </div>
+            <div className="text-2xl relative text-end top-10">
+              <span className="border rounded-3xl py-2 px-3 m-2 border-white">
+                React Three Fiber
+              </span>
+              <span className="border rounded-3xl py-2 px-3 m-2 border-white">
+                Gsap
+              </span>
+              <span className="border rounded-3xl py-2 px-3 m-2 border-white">
+                JavaScript
+              </span>
+              <span className="border rounded-3xl py-2 px-3 m-2 border-white">
+                CSS
+              </span>
+            </div>
+          </div>
+        </div>
+        <footer className="footer bg-gray-900 text-white py-10 text-center">
+          <p className="text-lg">
+            Built with ❤️ using React, GSAP, and Three.js
+          </p>
+        </footer>
+      </div>
 
-        {/* Slide 4
+      {/* Slide 4
           <div className="slide flex-shrink-0 h-[80%] relative border-2 border-green-600">
             <div className="slide-title relative border-2 text-6xl float-end">
               Info
@@ -211,7 +219,6 @@ export default function MyCanvas({ activeTab }) {
               <Keys2 position={[-16, -8.3, 0]} />
             </View>
           </div> */}
-      </div>
 
       {/* Fixed Canvas */}
       <Canvas
@@ -227,9 +234,6 @@ export default function MyCanvas({ activeTab }) {
         }}
         gl={{ alpha: true }}
         eventSource={document.getElementById("root")}
-        className=""
-        id="wrapper"
-        ref={wrapperRef}
       >
         <View.Port />
         <Preload all />
