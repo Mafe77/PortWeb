@@ -12,12 +12,12 @@ import useKeysModel from "./Keychains/KeyLoader.jsx";
 import { EightBallKey } from "./Keychains/EightBallKey.jsx";
 import { BoardKey } from "./Keychains/BoardKey.jsx";
 import gsap from "gsap";
-import Horizontal from "./Horizontal.jsx";
 import ScrollTrigger from "gsap/src/ScrollTrigger";
 import ScrollSmoother from "gsap/src/ScrollSmoother";
 import { useRef, useEffect } from "react";
 import { GoKey } from "./Keychains/GoKey.jsx";
 import keyImage from "../assets/placeholder1.png";
+import keyThumb from "../assets/keyThumb.png";
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
@@ -54,6 +54,27 @@ export default function MyCanvas() {
           i
         );
 
+        tl.fromTo(
+          accordion.querySelector(".hide"),
+          {
+            height: "100%",
+          },
+          {
+            height: 0,
+            opacity: 0,
+            paddingBottom: 0,
+          },
+          i
+        );
+
+        tl.to(
+          accordion.querySelector(".thumb"),
+          {
+            opacity: 1,
+          },
+          i
+        );
+
         tl.to(
           accordion,
           {
@@ -61,17 +82,6 @@ export default function MyCanvas() {
           },
           i
         );
-        // tl.to(".accordion", { height: "100px" });
-
-        // tl.fromTo(
-        //   accordion,
-        //   { height: "100%" },
-        //   {
-        //     height: "100px",
-        //     clearProps: "height", // 👈 clears inline height when finished
-        //   },
-        //   i
-        // );
 
         tl.to(contentRef.current, { height: "100vh" });
       });
@@ -98,10 +108,10 @@ export default function MyCanvas() {
           </div>
         </div>
         {/* Slide 1 */}
-        <div className="accordion relative flex justify-around pb-20 pt-10 border-b-2">
+        <div className="accordion relative flex justify-around pb-20 pt-10 ">
           {/* Left Side */}
-          <div className="relative h-[80%] w-[30%]">
-            <View className="inset-0 absolute ">
+          <div className="relative w-[30%]">
+            <View className="hide inset-0 absolute">
               <Common />
               <BoardKey nodes={nodes} materials={materials} />
               <PerspectiveCamera
@@ -110,6 +120,10 @@ export default function MyCanvas() {
                 lookAt={[BoardKey]}
               />
             </View>
+            <img
+              src={keyThumb}
+              className="thumb pl-20 opacity-0 h-[200px]"
+            ></img>
           </div>
           {/* Right Side */}
           <div className="relative w-[70%] h-[80%] flex flex-col pr-22">
@@ -134,13 +148,15 @@ export default function MyCanvas() {
           </div>
         </div>
 
+        <div className="border-t-3 h-2  w-250 relative left-[15%]"></div>
+
         {/* Slide 2 */}
-        <div className="accordion relative flex justify-around pb-20 pt-10 border-b-2 ">
+        <div className="accordion relative flex justify-around pb-20 pt-10  ">
           {/* Left Side */}
           <div className="slide-left relative w-[70%] h-[80%] flex flex-col pl-18">
             <h2 className="title text-8xl">Shape Of Go</h2>
             <div className="text h-[80%] relative text-center w-full pt-10">
-              <img src={keyImage} className=" w-full h-full"></img>
+              <img src={keyImage} className="w-full h-full"></img>
             </div>
             <div className="text-2xl relative top-10">
               <span className="border rounded-3xl py-2 px-3 m-2 border-white">
@@ -161,23 +177,34 @@ export default function MyCanvas() {
             </div>
           </div>
           {/* Right Side */}
-          <div className="text relative h-[80%] w-[30%]">
-            <View className="absolute inset-0">
+          <div className="relative h-[100%] w-[30%]">
+            <View className="hide absolute inset-0">
               <PerspectiveCamera makeDefault position={[3.2, 6, 14]} />
               <Common />
               <GoKey nodes={nodes} materials={materials} />
             </View>
+            <img
+              src={keyThumb}
+              className="thumb pl-20 opacity-0 h-[200px]"
+            ></img>
           </div>
         </div>
+
+        <div className="border-t-3 h-2  w-250 relative left-[15%]"></div>
+
         {/* Slide 3 */}
         <div className="accordion relative flex justify-around p-20 ">
           {/* Left Side */}
           <div className="relative h-[80%] w-[30%]">
-            <View className="inset-0 absolute ">
+            <View className="hide inset-0 absolute ">
               <PerspectiveCamera makeDefault position={[0, 0, 12]} />
               <Common />
               <EightBallKey nodes={nodes} materials={materials} />
             </View>
+            <img
+              src={keyThumb}
+              className="thumb pl-20 opacity-0 h-[200px]"
+            ></img>
           </div>
           {/* Right Side */}
           <div className="relative w-[70%] h-[80%] flex flex-col pr-22">
@@ -201,10 +228,8 @@ export default function MyCanvas() {
             </div>
           </div>
         </div>
-        <footer className="footer bg-gray-900 text-white py-10 text-center">
-          <p className="text-lg">
-            Built with ❤️ using React, GSAP, and Three.js
-          </p>
+        <footer className="footer bg-gray-900 text-white py-10 text-center h-full">
+          <p className="text-lg">❤️❤️❤️❤️❤️</p>
         </footer>
       </div>
 
