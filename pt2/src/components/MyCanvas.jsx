@@ -228,8 +228,8 @@ export default function MyCanvas() {
             </div>
           </div>
         </div>
-        <footer className="footer bg-gray-900 text-white py-10 text-center h-full">
-          <p className="text-lg">❤️❤️❤️❤️❤️</p>
+        <footer className="footer text-white py-10 text-center h-full ">
+          <p className="text-8xl">❤️❤️❤️❤️❤️</p>
         </footer>
       </div>
 

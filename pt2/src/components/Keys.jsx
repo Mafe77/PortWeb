@@ -544,5 +544,3 @@ export default function Model(props) {
 }
 
 useGLTF.preload("/Keychain1.glb");
-
-// useGLTF.preload("/Keychain1.glb");

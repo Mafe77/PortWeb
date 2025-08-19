@@ -2,16 +2,16 @@ export default function FancyBorder() {
   return (
     <div className="">
       {/* Top border */}
-      <div className="absolute top-14 left-12 right-14 border-t-3 border-black">
+      <div className="absolute top-14 left-12 right-14 ">
         <div className="text-9xl font-bold ">FRONTEND</div>
       </div>
       {/* Top right vertical */}
-      <div className="fixed top-14 right-12 h-16 border-r-3 border-black"></div>
+      {/* <div className="fixed top-14 right-12 h-16 border-r-3 border-black"></div> */}
 
       {/* Right border */}
-      <div className="fixed top-42 right-12 border-r-3 h-96 border-black"></div>
+      {/* <div className="fixed top-42 right-12 border-r-3 h-96 border-black"></div> */}
       {/* Diamond in top right */}
-      <div className="fixed top-34 right-10 w-4 h-4 bg-black rotate-45"></div>
+      {/* <div className="fixed top-34 right-10 w-4 h-4 bg-black rotate-45"></div> */}
 
       {/* Bottom border */}
       {/* <div className="absolute bottom-18 left-12 w-96 border-b-3 border-black"></div> */}
