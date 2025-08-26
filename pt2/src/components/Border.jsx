@@ -1,9 +1,11 @@
 export default function FancyBorder() {
   return (
-    <div className="">
+    <div className="col-span-4 col-start-2">
       {/* Top border */}
-      <div className="absolute top-14 left-12 right-14 ">
-        <div className="text-9xl font-bold ">FRONTEND</div>
+      <div className="relative top-14 left-12 right-14">
+        <div className="text-9xl font-bold font-display tracking-wide">
+          FRONTEND
+        </div>
       </div>
       {/* Top right vertical */}
       {/* <div className="fixed top-14 right-12 h-16 border-r-3 border-black"></div> */}
@@ -15,12 +17,12 @@ export default function FancyBorder() {
 
       {/* Bottom border */}
       {/* <div className="absolute bottom-18 left-12 w-96 border-b-3 border-black"></div> */}
-      <div className="text-9xl font-bold absolute bottom-18 right-14">
+      <div className="text-9xl font-bold font-display absolute bottom-18 right-14 tracking-wide z-10">
         DEVELOPER
       </div>
       {/* Bottom left vertical */}
       <div className="absolute bottom-18 left-12 h-16 border-l-3 border-black">
-        <div className="flex flex-col text-2xl relative -top-19 -left-2">
+        <div className="flex flex-col text-2xl relative -top-19 -left-2 font-display">
           <span>MARIA</span> TALHAFERRO
         </div>
         <div className="relative -bottom-3 -left-1 flex flex-row">

@@ -1,6 +1,6 @@
 import "../App.css";
 import Keys from "./Keys.jsx";
-import { Canvas } from "@react-three/fiber";
+import { Canvas, extend, useFrame } from "@react-three/fiber";
 import {
   View,
   PerspectiveCamera,
@@ -17,220 +17,116 @@ import ScrollSmoother from "gsap/src/ScrollSmoother";
 import { useRef, useEffect } from "react";
 import { GoKey } from "./Keychains/GoKey.jsx";
 import keyImage from "../assets/placeholder1.png";
-import keyThumb from "../assets/keyThumb.png";
-
-gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
+import DottedSlide from "./DottedSlide.jsx";
 
 export default function MyCanvas() {
   const { nodes, materials } = useKeysModel();
 
-  const contentRef = useRef(null);
+  const containerRef = useRef(null);
+  const maskRef = useRef(null);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: contentRef.current,
-          pin: true,
-          start: "top top",
-          end: "bottom top",
-          scrub: 1,
-          ease: "power1.inOut",
-          markers: true,
-          // toggleActions: "play reverse play reverse",
-        },
-      });
+    const container = containerRef.current;
+    const mask = maskRef.current;
+    if (!container || !mask) return;
 
-      const accordions = gsap.utils.toArray(".accordion");
+    const handleMouseMove = (e) => {
+      const rect = container.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
 
-      accordions.forEach((accordion, i) => {
-        tl.to(
-          accordion.querySelector(".text"),
-          {
-            height: 0,
-            opacity: 0,
-            paddingBottom: 0,
-          },
-          i
-        );
+      mask.style.setProperty("--x", `${x}%`);
+      mask.style.setProperty("--y", `${y}%`);
+    };
 
-        tl.fromTo(
-          accordion.querySelector(".hide"),
-          {
-            height: "100%",
-          },
-          {
-            height: 0,
-            opacity: 0,
-            paddingBottom: 0,
-          },
-          i
-        );
+    const handleMouseLeave = () => {
+      mask.style.setProperty("--x", `50%`);
+      mask.style.setProperty("--y", `50%`);
+    };
 
-        tl.to(
-          accordion.querySelector(".thumb"),
-          {
-            opacity: 1,
-          },
-          i
-        );
+    container.addEventListener("mousemove", handleMouseMove);
+    container.addEventListener("mouseleave", handleMouseLeave);
 
-        tl.to(
-          accordion,
-          {
-            marginBottom: -15,
-          },
-          i
-        );
-
-        tl.to(contentRef.current, { height: "100vh" });
-      });
-    }, contentRef);
-
-    return () => ctx.revert();
+    return () => {
+      container.removeEventListener("mousemove", handleMouseMove);
+      container.removeEventListener("mouseleave", handleMouseLeave);
+    };
   }, []);
+
+  const slidesData = {
+    Key: {
+      name: "KEYBOARD",
+      model: <BoardKey nodes={nodes} materials={materials} />,
+      camera: <PerspectiveCamera makeDefault position={[-2.7, 6.7, 8.7]} />,
+      image: keyImage,
+    },
+    GoKey: {
+      name: "SHAPE OF GO",
+      model: <GoKey nodes={nodes} materials={materials} />,
+      camera: <PerspectiveCamera makeDefault position={[3.2, 6, 14]} />,
+      image: keyImage,
+    },
+    EightBall: {
+      name: "OTHERS",
+      model: <EightBallKey nodes={nodes} materials={materials} />,
+      camera: <PerspectiveCamera makeDefault position={[0, 0, 12]} />,
+      image: keyImage,
+    },
+  };
+
   return (
-    <div>
-      {/* 3D View */}
-      <View className="w-screen h-screen z-30">
-        <Common />
-        <Keys position={[0, -7.7, 1]} />
-        <PerspectiveCamera makeDefault position={[0, 0, 16]} />
-      </View>
+    <div className="mx-width relative z-50">
+      <div className="relative text-secondary">
+        <h1 className="font-display text-[11rem] absolute -top-12 right-1 tracking-tight">
+          FRONTENDEVELOPER
+        </h1>
+        <View className="h-screen z-[-1] mx-width ">
+          <Common />
+          <Keys position={[0.23, -7.7, 1]} />
+          <PerspectiveCamera makeDefault position={[0, 0, 16]} />
+        </View>
+      </div>
+      <div className="h-screen flex flex-col relative font-display justify-center items-center">
+        {Object.entries(slidesData).map(([key, slide], index) => (
+          <DottedSlide
+            key={key}
+            className={`border-secondary border-1 h-500 w-[90%] bg-primary rounded-sm ${
+              index > 0 ? "mt-10" : ""
+            }`}
+          >
+            {/* Header */}
+            <div className="w-full border-b-1 h-10 flex justify-between px-10 text-lg font-display bg-[#222] z-50 text-secondary">
+              <h2 className="relative top-1 font-medium">{slide.name}</h2>
+              <button className="border-1 px-2 my-1 rounded-lg hover:bg-primary hover:text-secondary">
+                Explore
+              </button>
+            </div>
 
-      <div
-        className="accordions flex flex-col z-0 w-screen h-screen relative"
-        ref={contentRef}
-      >
-        <div className=" relative -right-154 top-20 border-t-3 w-191 border-black">
-          <div className="text-9xl font-light relative -left-142 -top-20">
-            PROJECTS
-          </div>
-        </div>
-        {/* Slide 1 */}
-        <div className="accordion relative flex justify-around pb-20 pt-10 ">
-          {/* Left Side */}
-          <div className="relative w-[30%]">
-            <View className="hide inset-0 absolute">
-              <Common />
-              <BoardKey nodes={nodes} materials={materials} />
-              <PerspectiveCamera
-                makeDefault
-                position={[-2.7, 6.7, 10.5]}
-                lookAt={[BoardKey]}
+            {/* Content */}
+            <div className="relative h-full flex justify-n">
+              <div className="relative w-[22%]">
+                <View className="absolute inset-0">
+                  <Common />
+                  {slide.model}
+                  {slide.camera}
+                </View>
+              </div>
+              <img
+                src={slide.image}
+                className="relative h-[92%] w-[56%] border-x-4 border-secondary"
               />
-            </View>
-            <img
-              src={keyThumb}
-              className="thumb pl-20 opacity-0 h-[200px]"
-            ></img>
-          </div>
-          {/* Right Side */}
-          <div className="relative w-[70%] h-[80%] flex flex-col pr-22">
-            <h2 className="title text-8xl text-end">Keyboard</h2>
-            <div className="text h-[80%] relative text-center w-full pt-10">
-              <img src={keyImage} className="w-full h-full rounded-lg"></img>
+              <div className="text-secondary flex flex-col text-3xl w-[22%] text-center p-4">
+                <span className="border-2 rounded-xl mt-5">
+                  React three fiber
+                </span>
+                <span className="border-2 rounded-xl mt-5">Three Js</span>
+                <span className="border-2 rounded-xl mt-5">CSS</span>
+                <span className="border-2 rounded-xl mt-5">HTML</span>
+                <span className="border-2 rounded-xl mt-5">GSAP</span>
+              </div>
             </div>
-            <div className="text-2xl relative text-end top-10">
-              <span className="border rounded-3xl py-2 px-3 m-2 border-white">
-                React Three Fiber
-              </span>
-              <span className="border rounded-3xl py-2 px-3 m-2 border-white">
-                Gsap
-              </span>
-              <span className="border rounded-3xl py-2 px-3 m-2 border-white">
-                JavaScript
-              </span>
-              <span className="border rounded-3xl py-2 px-3 m-2 border-white">
-                CSS
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <div className="border-t-3 h-2  w-250 relative left-[15%]"></div>
-
-        {/* Slide 2 */}
-        <div className="accordion relative flex justify-around pb-20 pt-10  ">
-          {/* Left Side */}
-          <div className="slide-left relative w-[70%] h-[80%] flex flex-col pl-18">
-            <h2 className="title text-8xl">Shape Of Go</h2>
-            <div className="text h-[80%] relative text-center w-full pt-10">
-              <img src={keyImage} className="w-full h-full"></img>
-            </div>
-            <div className="text-2xl relative top-10">
-              <span className="border rounded-3xl py-2 px-3 m-2 border-white">
-                Three JS
-              </span>
-              <span className="border rounded-3xl py-2 px-3 m-2 border-white">
-                Gsap
-              </span>
-              <span className="border rounded-3xl py-2 px-3 m-2 border-white">
-                JavaScript
-              </span>
-              <span className="border rounded-3xl py-2 px-3 m-2 border-white">
-                CSS
-              </span>
-              <span className="border rounded-3xl py-2 px-3 m-2 border-white">
-                HTML
-              </span>
-            </div>
-          </div>
-          {/* Right Side */}
-          <div className="relative h-[100%] w-[30%]">
-            <View className="hide absolute inset-0">
-              <PerspectiveCamera makeDefault position={[3.2, 6, 14]} />
-              <Common />
-              <GoKey nodes={nodes} materials={materials} />
-            </View>
-            <img
-              src={keyThumb}
-              className="thumb pl-20 opacity-0 h-[200px]"
-            ></img>
-          </div>
-        </div>
-
-        <div className="border-t-3 h-2  w-250 relative left-[15%]"></div>
-
-        {/* Slide 3 */}
-        <div className="accordion relative flex justify-around p-20 ">
-          {/* Left Side */}
-          <div className="relative h-[80%] w-[30%]">
-            <View className="hide inset-0 absolute ">
-              <PerspectiveCamera makeDefault position={[0, 0, 12]} />
-              <Common />
-              <EightBallKey nodes={nodes} materials={materials} />
-            </View>
-            <img
-              src={keyThumb}
-              className="thumb pl-20 opacity-0 h-[200px]"
-            ></img>
-          </div>
-          {/* Right Side */}
-          <div className="relative w-[70%] h-[80%] flex flex-col pr-22">
-            <h2 className="title text-8xl text-end">Others</h2>
-            <div className="text h-full relative text-center w-full pt-10">
-              <img src={keyImage} className="w-full h-full rounded-lg"></img>
-            </div>
-            <div className="text-2xl relative text-end top-10">
-              <span className="border rounded-3xl py-2 px-3 m-2 border-white">
-                React Three Fiber
-              </span>
-              <span className="border rounded-3xl py-2 px-3 m-2 border-white">
-                Gsap
-              </span>
-              <span className="border rounded-3xl py-2 px-3 m-2 border-white">
-                JavaScript
-              </span>
-              <span className="border rounded-3xl py-2 px-3 m-2 border-white">
-                CSS
-              </span>
-            </div>
-          </div>
-        </div>
-        <footer className="footer text-white py-10 text-center h-full ">
-          <p className="text-8xl">❤️❤️❤️❤️❤️</p>
-        </footer>
+          </DottedSlide>
+        ))}
       </div>
 
       {/* Slide 4
@@ -244,7 +140,6 @@ export default function MyCanvas() {
               <Keys2 position={[-16, -8.3, 0]} />
             </View>
           </div> */}
-
       {/* Fixed Canvas */}
       <Canvas
         style={{
@@ -254,11 +149,9 @@ export default function MyCanvas() {
           left: 0,
           right: 0,
           overflow: "hidden",
-          background: "transparent",
-          pointerEvents: "none",
         }}
-        gl={{ alpha: true }}
         eventSource={document.getElementById("root")}
+        className="container1 w-screen h-screen"
       >
         <View.Port />
         <Preload all />

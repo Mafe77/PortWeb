@@ -1,76 +1,64 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Parisienne&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Afacad:ital,wght@0,400..700;1,400..700&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #f5f5f5;
-  --color-secondary: #437FCC;
+  --color-primary: #111010;
+  --color-secondary: #D9D9D9;
   --color-tertuary: #0e69e8;
-  --font-display: "Roboto Condensed", sans-serif;
+  /* --font-display: "Roboto Condensed", sans-serif; */
+  --font-display: "Afacad", sans-serif;
+  --font-title: "Parisienne", cursive;
 }
 
-* {
-  box-sizing: border-box;
+:root {
+  --space-s3: .25rem;
+  --space-s2: .5rem;
+  --space-s1: .75rem;
+  --space-0: 1rem;
+  --space-1: 1.5rem;
+  --space-2: 2rem;
+  --space-3: 4rem;
+  --space-4: 8rem;
+  --space-5: 10rem;
 }
 
-/* html,
-#root {
-  content: '';
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  background-color: var(--color-primary);
-  overflow: hidden;
-  z-index: -1;
-  filter: url(#noiseFilter);
-} */
 
 body {
-  margin: 0;
-  overflow-x: hidden;
-  
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  
-  background-color: var(--color-primary);
-  
+  min-block-size: 100vh;
+  background: var(--color-primary);
+  position: relative;
+  padding-top: var(--space-1);
 }
 
-body::before,
-body::after {
-  position: absolute;
-  left: 0;
-  top: 0;
-  content: '';
+
+main {
+  z-index: 1;
+  background: var(--color-primary);
+  border-bottom-left-radius: clamp(var(--space-2),-1rem + 6vw,var(--space-3));
+  border-bottom-right-radius: clamp(var(--space-2),-1rem + 6vw,var(--space-3));
+  border: var(--color-secondary);
+  min-block-size: 100vh;
+  padding-block-end:25vh;
+  position: relative;
+  padding-block-start: 10px;
+}
+
+.mx-width {
+  --inline-size: 1440px;
+  max-width: min(100% - var(--space-0)*2,var(--inline-size));
   width: 100%;
-  height: 300%;
-  overflow: hidden;
-
-  opacity: 40%;
-  pointer-events: none;
+  margin-inline-start:auto;
+  margin-inline-end:auto
 }
 
-body::before {
-  /* background: #464646; */
-  filter: url(#noiseFilter);
-  background-image: linear-gradient(90deg, #f5f5f5 49.50%, #c2c2c2 49.50%, #c2c2c2 50%, #f5f5f5 50%, #f5f5f5 99.50%, #c2c2c2 99.50%, #c2c2c2 100%);
-  background-size: 504.00px 504.00px;
-}
-
-.navBar {
-  position: fixed;
-  background-color: #f5f5f5;
-  z-index: 9999;
-  border-bottom: rgb(189, 189, 189) 1px solid;
-}
 
 /* ===== Scrollbar CSS ===== */
   /* Firefox */
   * {
     scrollbar-width: thin;
-    scrollbar-color: #0f0f0f #f5f5f5;
+    scrollbar-color: #d9d9d9 #111010;
   }
 
   /* Chrome, Edge, and Safari */
@@ -79,7 +67,7 @@ body::before {
   }
 
   *::-webkit-scrollbar-track {
-    background: #f5f5f5;
+    background: #111010;
   }
 
   *::-webkit-scrollbar-thumb {
@@ -89,54 +77,124 @@ body::before {
   }
 
 .footer {
-  /* filter: url(#noiseFilter); */
-  /* background-image: linear-gradient(90deg, #171717 49.50%, #c2c2c2 49.50%, #c2c2c2 50%, #171717 50%, #171717 99.50%, #c2c2c2 99.50%, #c2c2c2 100%);
-  background-size: 504.00px 504.00px; */
   background-color: #171717;
 }
 
-/* .navBar::before, .navBar::after {
-  position: absolute;
-  left: 0;
-  top: 0;
-  content: '';
-  width: 100%;
-  height: 100%;
-  opacity: 40%;
-  z-index: 9999;
-   pointer-events: none;
+.g-wrapper {
+  container: grid/inline-size
 }
 
-.navBar::before {
-  z-index: 10;
-  background: #464646;
-  filter: url(#noiseFilter);
-} */
+[class*=grid] {
+  gap: var(--space-0);
+  display: grid
+}
+
+.grid\:4 {
+  grid-template-columns: repeat(4,1fr);
+}
+
+.grid\:3-1 {
+  grid-template-columns: 1fr 3fr;
+}
+
+.grid\:2 {
+  grid-template-columns: repeat(2,1fr);
+}
+
+.grid\:5 {
+  grid-template-columns: repeat(5,1fr);
+}
+
+@container grid (width<75ch) {
+  [class*=grid] {
+    grid-template-columns: 1fr
+  }
+
+  .mobile\: hidden {
+    display:none
+  }
+}
 
 
-.sliderContainer{
-  position: absolute;
-  top: calc(100vh - 350px);
+.header {
+  background: var(--color-primary);
+  color: var(--color-secondary);
+  z-index: 999;
+  padding-block: .75rem;
+  border: 1px solid var(--color-secondary);
+  /* position: sticky; */
+  top: 0;
+  container: header/inline-size;
+}
+
+nav {
+  z-index: 999;
+  place-items: baseline flex-start;
+  position: relative;
+}
+
+nav>* {
+  align-items: baseline
+}
+
+nav>[class*=menu] {
+  justify-self: flex-end
+}
+
+.underlay {
   z-index: -1;
-}
-
-.slider{
-  position: relative;
-  white-space: nowrap;
-  width: 100%;
-}
-
-.slider p{
-  position: relative;
-  margin: 0px;
-  color: white;
-  font-size: 230px;
-  font-weight: 500;
-  padding-right: 50px;
-}
-
-.slider p:nth-of-type(2){
+  pointer-events: none;
   position: absolute;
-  left: 100%;
   top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+    
+}
+
+.underlay .grid\:2 {
+  gap: unset;
+  block-size: 100%
+}
+
+.underlay .grid\:2>:not(.grid\:2) {
+  opacity: .5;
+  border-inline-start:1px solid var(--color-secondary);
+  border-inline-end:1px solid var(--color-secondary);
+}
+
+
+.dotted-bg {
+  position: relative;
+  overflow: hidden;
+  background-image: url("data:image/svg+xml,%3Csvg width='8' height='8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%231D1D1D' d='M0 0h1v1H0z'/%3E%3C/svg%3E");
+  background-size: max(10px,.4166666667vw) max(10px,.4166666667vw);
+  background-repeat: repeat;
+}
+
+.dotted-above {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='8' height='8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%23616161' d='M0 0h1v1H0z'/%3E%3C/svg%3E");
+  background-size: max(10px,.4166666667vw) max(10px,.4166666667vw);
+  background-repeat: repeat;
+  pointer-events: none;
+  z-index: 1;
+
+  /* radial mask controlled by CSS vars */
+  -webkit-mask-image: radial-gradient(
+    circle 150px at var(--x, 50%) var(--y, 50%),
+    rgba(0,0,0,1) 0%,
+    rgba(0,0,0,0) 100%
+  );
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+
+  mask-image: radial-gradient(
+    circle 150px at var(--x, 50%) var(--y, 50%),
+    rgba(0,0,0,1) 0%,
+    rgba(0,0,0,0) 100%
+  );
+  mask-repeat: no-repeat;
+  mask-size: 100% 100%;
 }

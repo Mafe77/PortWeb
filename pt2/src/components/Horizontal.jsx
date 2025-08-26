@@ -5,7 +5,7 @@ import ScrollToPlugin from "gsap/src/ScrollToPlugin";
 
 function Horizontal() {
   return (
-    <div className="absolute bottom-250">
+    <div className="bottom-250 col-span-4 col-start-2">
       <div className=" -right-150 top-20 border-t-3 w-191 border-black">
         <div className="text-9xl font-light relative -left-142 -top-20">
           PROJECTS
