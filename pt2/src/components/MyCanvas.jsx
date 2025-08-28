@@ -11,13 +11,14 @@ import {
 import useKeysModel from "./Keychains/KeyLoader.jsx";
 import { EightBallKey } from "./Keychains/EightBallKey.jsx";
 import { BoardKey } from "./Keychains/BoardKey.jsx";
-import gsap from "gsap";
-import ScrollTrigger from "gsap/src/ScrollTrigger";
-import ScrollSmoother from "gsap/src/ScrollSmoother";
 import { useRef, useEffect } from "react";
 import { GoKey } from "./Keychains/GoKey.jsx";
-import keyImage from "../assets/placeholder1.png";
+import keyImage from "../assets/placeholder2.png";
 import DottedSlide from "./DottedSlide.jsx";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function MyCanvas() {
   const { nodes, materials } = useKeysModel();
@@ -53,9 +54,54 @@ export default function MyCanvas() {
     };
   }, []);
 
+  // const linesRef = useRef([]);
+  // const cursorRef = useRef(null);
+
+  // useEffect(() => {
+  //   const tl = gsap.timeline({
+  //     scrollTrigger: {
+  //       trigger: linesRef.current[0],
+  //       start: "top 80%",
+  //       toggleActions: "play none none reset",
+  //     },
+  //   });
+
+  //   // type each line in sequence
+  //   linesRef.current.forEach((mask, i) => {
+  //     tl.fromTo(
+  //       mask,
+  //       { width: "0%" },
+  //       {
+  //         width: "100%",
+  //         duration: 3,
+  //         ease: "steps(40)",
+  //       },
+  //       i * 1.2
+  //     );
+  //   });
+
+  //   // make the cursor blink once all text is revealed
+  //   tl.to(
+  //     cursorRef.current,
+  //     {
+  //       opacity: 0,
+  //       repeat: -1,
+  //       yoyo: true,
+  //       duration: 0.5,
+  //       ease: "none",
+  //     },
+  //     "+=0.2"
+  //   );
+
+  //   return () => {
+  //     tl.scrollTrigger?.kill();
+  //     tl.kill();
+  //   };
+  // }, []);
+
   const slidesData = {
     Key: {
-      name: "KEYBOARD",
+      name: "PROJECT-K",
       model: <BoardKey nodes={nodes} materials={materials} />,
       camera: <PerspectiveCamera makeDefault position={[-2.7, 6.7, 8.7]} />,
       image: keyImage,
@@ -77,10 +123,13 @@ export default function MyCanvas() {
   return (
     <div className="mx-width relative z-50">
       <div className="relative text-secondary">
-        <h1 className="font-display text-[11rem] absolute -top-12 right-1 tracking-tight">
+        <h1
+          className="glitch glow-title font-display absolute -top-12 right-1 tracking-tight"
+          data-text="FRONTENDEVELOPER"
+        >
           FRONTENDEVELOPER
         </h1>
-        <View className="h-screen z-[-1] mx-width ">
+        <View className="h-screen mx-width ">
           <Common />
           <Keys position={[0.23, -7.7, 1]} />
           <PerspectiveCamera makeDefault position={[0, 0, 16]} />
@@ -95,9 +144,11 @@ export default function MyCanvas() {
             }`}
           >
             {/* Header */}
-            <div className="w-full border-b-1 h-10 flex justify-between px-10 text-lg font-display bg-[#222] z-50 text-secondary">
-              <h2 className="relative top-1 font-medium">{slide.name}</h2>
-              <button className="border-1 px-2 my-1 rounded-lg hover:bg-primary hover:text-secondary">
+            <div className="w-full border-b-1 h-10 flex justify-between px-10 text-lg font-display bg-[#060606] z-50 text-secondary">
+              <h2 className="relative top-1 font-medium glow-sub">
+                {slide.name}
+              </h2>
+              <button className="border-1 px-2 my-1 rounded-lg hover:bg-secondary hover:text-primary">
                 Explore
               </button>
             </div>
@@ -115,14 +166,45 @@ export default function MyCanvas() {
                 src={slide.image}
                 className="relative h-[92%] w-[56%] border-x-4 border-secondary"
               />
-              <div className="text-secondary flex flex-col text-3xl w-[22%] text-center p-4">
-                <span className="border-2 rounded-xl mt-5">
-                  React three fiber
-                </span>
-                <span className="border-2 rounded-xl mt-5">Three Js</span>
-                <span className="border-2 rounded-xl mt-5">CSS</span>
-                <span className="border-2 rounded-xl mt-5">HTML</span>
-                <span className="border-2 rounded-xl mt-5">GSAP</span>
+              <div className="text-secondary flex flex-col text-3xl w-[22%]  glow-title pl-5 css-typing">
+                {/* <span
+                  className="mt-5 anim-typewriter line-1"
+                  ref={textRef}
+                  style={{
+                    overflow: "hidden",
+                    borderRight: "2px solid rgba(255,255,255,0.75)",
+                    fontFamily: "monospace",
+                    whiteSpace: "pre-line",
+                  }}
+                >
+                  {` >React three fiber\n >GSAP \n>Three Js`}
+                </span> */}
+                {/* <div className="text-container space-y-4">
+                  {[">R3F", ">GSAP", ">ThreeJs"].map((text, i, arr) => (
+                    <div key={i} className="flex" style={{ maxWidth: "40ch" }}>
+                      <span
+                        ref={(el) => (linesRef.current[i] = el)}
+                        className="mask inline-block overflow-hidden"
+                        style={{ whiteSpace: "normal" }}
+                      >
+                        {text}
+                      </span>
+
+                      {i === arr.length - 1 && (
+                        <span
+                          ref={cursorRef}
+                          className="cursor inline-block ml-1"
+                          style={{ opacity: 1 }}
+                        >
+                          &#9644;
+                        </span>
+                      )}
+                    </div>
+                  ))}
+                </div> */}
+                <p className="tag  mt-5">&gt; Three Js</p>
+                <p className="tag  mt-5">&gt; CSS/HTML</p>
+                <p className="tag  mt-5">&gt; GSAP</p>
               </div>
             </div>
           </DottedSlide>
