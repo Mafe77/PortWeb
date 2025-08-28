@@ -60,7 +60,7 @@ main {
   background: var(--color-primary);
   border-bottom-left-radius: clamp(var(--space-2),-1rem + 6vw,var(--space-3));
   border-bottom-right-radius: clamp(var(--space-2),-1rem + 6vw,var(--space-3));
-  border-bottom: var(--color-secondary) solid 1px;
+  /* border-bottom: var(--color-secondary) solid 1px; */
   min-block-size: 100vh;
   padding-block-end:25vh;
   position: relative;
@@ -233,10 +233,10 @@ nav>[class*=menu] {
   position: absolute;
   top: -12px;
   color: var(--color-secondary);
-  font-size: 11rem; /* updated size */
+  font-size: 11rem;
   font-weight: bold;
   text-transform: uppercase;
-  line-height: 1; /* keeps spacing tight */
+  line-height: 1; 
 }
 
 .glitch::before,
@@ -282,10 +282,6 @@ nav>[class*=menu] {
   100% { clip: rect(0, 9999px, 0, 0); }
 }
 
-/* Animation */
-.anim-typewriter{
-  width:0;
-}
 
 .css-typing p {
   border-right: .40em solid var(--color-secondary);
@@ -314,10 +310,10 @@ nav>[class*=menu] {
 }
 
 .css-typing p:nth-child(3) {
-  width: 4.3em;
+  width: 11.3em;
   opacity: 0;
-  -webkit-animation: type3 2s steps(20, end), blink .5s step-end infinite alternate;
-  animation: type3 2s steps(20, end), blink .5s step-end infinite alternate;
+  -webkit-animation: type3 2s steps(40, end), blink .5s step-end infinite alternate;
+  animation: type3 2s steps(40, end), blink .5s step-end infinite alternate;
   -webkit-animation-delay: 4s;
   animation-delay: 4s;
   -webkit-animation-fill-mode: forwards;

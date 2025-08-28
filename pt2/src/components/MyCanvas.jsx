@@ -17,6 +17,7 @@ import keyImage from "../assets/placeholder2.png";
 import DottedSlide from "./DottedSlide.jsx";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Slides from "./Slides.jsx";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -54,68 +55,70 @@ export default function MyCanvas() {
     };
   }, []);
 
-  // const linesRef = useRef([]);
-  // const cursorRef = useRef(null);
+  const linesRef = useRef([]);
 
-  // useEffect(() => {
-  //   const tl = gsap.timeline({
-  //     scrollTrigger: {
-  //       trigger: linesRef.current[0],
-  //       start: "top 80%",
-  //       toggleActions: "play none none reset",
-  //     },
-  //   });
+  useEffect(() => {
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: ".css-typing",
+        start: "top 80%", // when block hits 80% viewport height
+        toggleActions: "play none none reset",
+      },
+    });
 
-  //   // type each line in sequence
-  //   linesRef.current.forEach((mask, i) => {
-  //     tl.fromTo(
-  //       mask,
-  //       { width: "0%" },
-  //       {
-  //         width: "100%",
-  //         duration: 3,
-  //         ease: "steps(40)",
-  //       },
-  //       i * 1.2
-  //     );
-  //   });
+    // animate each line in sequence
+    linesRef.current.forEach((line, i) => {
+      tl.fromTo(
+        line,
+        { width: "0ch", opacity: 1 },
+        {
+          width: `${line.textContent.length}ch`, // type character by character
+          duration: 2,
+          ease: `steps(${line.textContent.length})`,
+        },
+        i * 2 // start time offset like your CSS delays
+      );
+    });
 
-  //   // make the cursor blink once all text is revealed
-  //   tl.to(
-  //     cursorRef.current,
-  //     {
-  //       opacity: 0,
-  //       repeat: -1,
-  //       yoyo: true,
-  //       duration: 0.5,
-  //       ease: "none",
-  //     },
-  //     "+=0.2"
-  //   );
+    // blinking cursor only on last line
+    const lastLine = linesRef.current[linesRef.current.length - 1];
+    if (lastLine) {
+      tl.to(
+        lastLine,
+        {
+          borderRightColor: "transparent",
+          repeat: -1,
+          yoyo: true,
+          duration: 0.5,
+          ease: "none",
+        },
+        ">-0.5" // start right after last typing finishes
+      );
+    }
 
-  //   return () => {
-  //     tl.scrollTrigger?.kill();
-  //     tl.kill();
-  //   };
-  // }, []);
+    return () => {
+      tl.scrollTrigger?.kill();
+      tl.kill();
+    };
+  }, []);
 
   const slidesData = {
     Key: {
       name: "PROJECT-K",
       model: <BoardKey nodes={nodes} materials={materials} />,
-      camera: <PerspectiveCamera makeDefault position={[-2.7, 6.7, 8.7]} />,
+      camera: <PerspectiveCamera makeDefault position={[-2.7, 7, 8]} />,
       image: keyImage,
     },
     GoKey: {
       name: "SHAPE OF GO",
       model: <GoKey nodes={nodes} materials={materials} />,
-      camera: <PerspectiveCamera makeDefault position={[3.2, 6, 14]} />,
+      camera: <PerspectiveCamera makeDefault position={[3.5, 6.5, 10]} />,
       image: keyImage,
     },
     EightBall: {
       name: "OTHERS",
       model: <EightBallKey nodes={nodes} materials={materials} />,
-      camera: <PerspectiveCamera makeDefault position={[0, 0, 12]} />,
+      camera: <PerspectiveCamera makeDefault position={[0.2, 0, 10]} />,
       image: keyImage,
     },
   };
@@ -135,81 +138,7 @@ export default function MyCanvas() {
           <PerspectiveCamera makeDefault position={[0, 0, 16]} />
         </View>
       </div>
-      <div className="h-screen flex flex-col relative font-display justify-center items-center">
-        {Object.entries(slidesData).map(([key, slide], index) => (
-          <DottedSlide
-            key={key}
-            className={`border-secondary border-1 h-500 w-[90%] bg-primary rounded-sm ${
-              index > 0 ? "mt-10" : ""
-            }`}
-          >
-            {/* Header */}
-            <div className="w-full border-b-1 h-10 flex justify-between px-10 text-lg font-display bg-[#060606] z-50 text-secondary">
-              <h2 className="relative top-1 font-medium glow-sub">
-                {slide.name}
-              </h2>
-              <button className="border-1 px-2 my-1 rounded-lg hover:bg-secondary hover:text-primary">
-                Explore
-              </button>
-            </div>
-
-            {/* Content */}
-            <div className="relative h-full flex justify-n">
-              <div className="relative w-[22%]">
-                <View className="absolute inset-0">
-                  <Common />
-                  {slide.model}
-                  {slide.camera}
-                </View>
-              </div>
-              <img
-                src={slide.image}
-                className="relative h-[92%] w-[56%] border-x-4 border-secondary"
-              />
-              <div className="text-secondary flex flex-col text-3xl w-[22%]  glow-title pl-5 css-typing">
-                {/* <span
-                  className="mt-5 anim-typewriter line-1"
-                  ref={textRef}
-                  style={{
-                    overflow: "hidden",
-                    borderRight: "2px solid rgba(255,255,255,0.75)",
-                    fontFamily: "monospace",
-                    whiteSpace: "pre-line",
-                  }}
-                >
-                  {` >React three fiber\n >GSAP \n>Three Js`}
-                </span> */}
-                {/* <div className="text-container space-y-4">
-                  {[">R3F", ">GSAP", ">ThreeJs"].map((text, i, arr) => (
-                    <div key={i} className="flex" style={{ maxWidth: "40ch" }}>
-                      <span
-                        ref={(el) => (linesRef.current[i] = el)}
-                        className="mask inline-block overflow-hidden"
-                        style={{ whiteSpace: "normal" }}
-                      >
-                        {text}
-                      </span>
-
-                      {i === arr.length - 1 && (
-                        <span
-                          ref={cursorRef}
-                          className="cursor inline-block ml-1"
-                          style={{ opacity: 1 }}
-                        >
-                          &#9644;
-                        </span>
-                      )}
-                    </div>
-                  ))}
-                </div> */}
-                <p className="tag  mt-5">&gt; Three Js</p>
-                <p className="tag  mt-5">&gt; CSS/HTML</p>
-                <p className="tag  mt-5">&gt; GSAP</p>
-              </div>
-            </div>
-          </DottedSlide>
-        ))}
-      </div>
+      <Slides slidesData={slidesData} />
 
       {/* Slide 4
           <div className="slide flex-shrink-0 h-[80%] relative border-2 border-green-600">
