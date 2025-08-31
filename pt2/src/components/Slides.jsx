@@ -38,30 +38,51 @@ function Slide({ slide, index }) {
     linesRef.current.forEach((line, i) => {
       tl.fromTo(
         line,
-        { width: "0ch", opacity: 1 },
+        {
+          width: "0ch",
+          opacity: 1,
+          // border: null,
+        },
         {
           width: `${line.textContent.length + 1}ch`,
           duration: 2,
           ease: `steps(${line.textContent.length})`,
+          // borderRight: ".4em solid var(--color-secondary)",
         },
         i * 2
       );
-    });
 
-    const lastLine = linesRef.current[linesRef.current.length - 1];
-    if (lastLine) {
-      tl.to(
-        lastLine,
+      tl.fromTo(
+        line,
         {
-          borderRightColor: "transparent",
-          repeat: -1,
-          yoyo: true,
-          duration: 0.5,
-          ease: "none",
+          "border-right-color": "rgba(255,255,255,0)",
         },
-        ">-0.5"
+        {
+          "border-right-color": "rgba(255,255,255,0.75)",
+          repeat: -1,
+          ease: `steps(${line.textContent.length})`,
+        },
+        i * 2
       );
-    }
+
+      if (i > 0) {
+        tl.to(
+          line,
+          {
+            border: null,
+          },
+          i * 4
+        );
+      } else {
+        tl.to(
+          line,
+          {
+            border: null,
+          },
+          2
+        );
+      }
+    });
 
     return () => {
       tl.scrollTrigger?.kill();
