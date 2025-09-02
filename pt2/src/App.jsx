@@ -8,7 +8,7 @@ function App() {
       <header className="header mx-width">
         <NavBarV2 />
       </header>
-      <main className="crt">
+      <main>
         {/* Background */}
         <div className="underlay mx-width border-b-1 border-secondary">
           <div className="grid:2 g-wrapper">

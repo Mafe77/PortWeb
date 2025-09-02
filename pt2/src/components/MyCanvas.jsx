@@ -76,13 +76,16 @@ export default function MyCanvas() {
       model: <EightBallKey nodes={nodes} materials={materials} />,
       camera: <PerspectiveCamera makeDefault position={[0.2, 0, 10]} />,
       image: keyImage,
-      text: { 0: "React", 1: "Shaders", 2: "Software" },
+      text: { 0: "Atama", 1: "Shaders", 2: "AISD" },
     },
   };
 
   return (
     <div className="mx-width relative z-50">
-      <div className="relative text-secondary h-screen flex flex-wrap">
+      <section
+        className="relative text-secondary h-screen flex flex-wrap"
+        id="home"
+      >
         <Header />
         {/* <h1
           className="glitch glow-title font-display absolute -top-12 right-1 tracking-tight"
@@ -104,8 +107,16 @@ export default function MyCanvas() {
           <Keys position={[0.23, -7.7, 0]} />
           <PerspectiveCamera makeDefault position={[0, 0, 15]} />
         </Canvas>
-      </div>
-      <Slides slidesData={slidesData} />
+      </section>
+      <section id="projects">
+        <Slides slidesData={slidesData} />
+      </section>
+
+      <section id="contact">
+        <div className="h-[300px] text-5xl text-secondary flex justify-center pt-50">
+          footer WIP
+        </div>
+      </section>
 
       {/* Slide 4
           <div className="slide flex-shrink-0 h-[80%] relative border-2 border-green-600">

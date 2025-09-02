@@ -1,4 +1,12 @@
+import { useRef } from "react";
+import { useFrame } from "@react-three/fiber";
+
 export function EightBallKey({ nodes, materials, ...props }) {
+  const innerRef = useRef();
+
+  useFrame((state, delta) => {
+    innerRef.current.rotation.z += delta;
+  });
   return (
     <group
       {...props}
@@ -6,6 +14,7 @@ export function EightBallKey({ nodes, materials, ...props }) {
       position={[0, 3.5, 0]}
       rotation={[-1.653, -0.016, -2.925]}
       scale={0.511}
+      ref={innerRef}
     >
       <mesh
         geometry={nodes.ring.geometry}
