@@ -10,6 +10,7 @@ import {
   Preload,
   Lightformer,
 } from "@react-three/drei";
+import { EffectComposer, ASCII } from "@react-three/postprocessing";
 import DottedSlide from "./DottedSlide";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -111,17 +112,28 @@ function Slide({ slide, index }) {
             className=""
             style={{
               position: "relative",
-              top: "-20px",
+              top: "-10px",
               bottom: 0,
-              left: 0,
+              left: "-8px",
               right: 0,
               height: "330px",
               overflow: "hidden",
             }}
           >
-            <Common />
+            {/* <Common /> */}
+            <directionalLight intensity={5} position={(10, 10, 10)} />
             {slide.model}
             {slide.camera}
+            <EffectComposer>
+              <ASCII
+                font="arial"
+                characters=".:,'-^=*#/{}()."
+                fontSize={62}
+                cellSize={7}
+                color="#6698f2"
+                invert={true}
+              />
+            </EffectComposer>
           </Canvas>
         </div>
 
@@ -131,7 +143,7 @@ function Slide({ slide, index }) {
         />
 
         <div className="text-secondary flex flex-col text-3xl w-[21%] glow-title pl-5 css-typing">
-          {[">ThreeJS", ">CSS/HTML", ">GSAP"].map((text, i) => (
+          {Object.values(slide.text).map((text, i) => (
             <p
               key={i}
               ref={(el) => (linesRef.current[i] = el)}
@@ -145,7 +157,7 @@ function Slide({ slide, index }) {
                 opacity: 1,
               }}
             >
-              {text}
+              {">" + text}
             </p>
           ))}
         </div>
@@ -158,29 +170,26 @@ function Common({ color }) {
   return (
     <>
       {color && <color attach="background" args={[color]} />}
-      <ambientLight intensity={0.2} />
-      <directionalLight intensity={1} />
-      <Environment
-        files="https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/blue_photo_studio_1k.hdr"
-        resolution={512}
-      >
-        <group rotation={[0, 0, 1]}>
+      <ambientLight intensity={2} />
+      <directionalLight intensity={10} />
+      <Environment>
+        <group rotation={[0, 0, 8]}>
           <Lightformer
             form="circle"
-            intensity={10}
+            intensity={1}
             position={[0, 10, -10]}
             scale={20}
             onUpdate={(self) => self.lookAt(0, 0, 0)}
           />
           <Lightformer
-            intensity={0.1}
+            intensity={0.2}
             onUpdate={(self) => self.lookAt(0, 0, 0)}
             position={[-5, 1, -1]}
             rotation-y={Math.PI / 2}
             scale={[50, 10, 1]}
           />
           <Lightformer
-            intensity={0.1}
+            intensity={0.2}
             onUpdate={(self) => self.lookAt(0, 0, 0)}
             position={[10, 1, 0]}
             rotation-y={-Math.PI / 2}
@@ -188,7 +197,7 @@ function Common({ color }) {
           />
           <Lightformer
             color="gray"
-            intensity={0.4}
+            intensity={1}
             onUpdate={(self) => self.lookAt(0, 0, 0)}
             position={[0, 1, 0]}
             scale={[10, 100, 1]}

@@ -32,34 +32,14 @@ body {
   padding-top: var(--space-1);
 }
 
-body::before,
-body::after {
-  position: absolute;
-  left: 0;
-  top: 0;
-  content: '';
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-
-  opacity: 5%;
-  z-index: 10;
-
-  pointer-events: none;
-
-}
-
-
-body::before {
-  background: var(--color-primary);
-  filter: url(#noiseFilter);
-}
 
 main {
   z-index: 1;
   background: var(--color-primary);
   border-bottom-left-radius: clamp(var(--space-2),-1rem + 6vw,var(--space-3));
   border-bottom-right-radius: clamp(var(--space-2),-1rem + 6vw,var(--space-3));
+  border-top-left-radius: clamp(var(--space-2),-1rem + 6vw,var(--space-3));
+  border-top-right-radius: clamp(var(--space-2),-1rem + 6vw,var(--space-3));
   /* border-bottom: var(--color-secondary) solid 1px; */
   min-block-size: 100vh;
   padding-block-end:25vh;
@@ -282,3 +262,11 @@ nav>[class*=menu] {
   100% { clip: rect(0, 9999px, 0, 0); }
 }
 
+
+.text-art {
+  font-family: monospace;
+  line-height: 1;
+  overflow: auto;
+  padding: 1rem;
+  white-space: pre;
+}

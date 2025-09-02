@@ -18,6 +18,7 @@ import DottedSlide from "./DottedSlide.jsx";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Slides from "./Slides.jsx";
+import Header from "./Header.jsx";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -55,88 +56,54 @@ export default function MyCanvas() {
     };
   }, []);
 
-  const linesRef = useRef([]);
-
-  useEffect(() => {
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: ".css-typing",
-        start: "top 80%", // when block hits 80% viewport height
-        toggleActions: "play none none reset",
-      },
-    });
-
-    // animate each line in sequence
-    linesRef.current.forEach((line, i) => {
-      tl.fromTo(
-        line,
-        { width: "0ch", opacity: 1 },
-        {
-          width: `${line.textContent.length}ch`, // type character by character
-          duration: 2,
-          ease: `steps(${line.textContent.length})`,
-        },
-        i * 2 // start time offset like your CSS delays
-      );
-    });
-
-    // blinking cursor only on last line
-    const lastLine = linesRef.current[linesRef.current.length - 1];
-    if (lastLine) {
-      tl.to(
-        lastLine,
-        {
-          borderRightColor: "transparent",
-          repeat: -1,
-          yoyo: true,
-          duration: 0.5,
-          ease: "none",
-        },
-        ">-0.5" // start right after last typing finishes
-      );
-    }
-
-    return () => {
-      tl.scrollTrigger?.kill();
-      tl.kill();
-    };
-  }, []);
-
   const slidesData = {
     Key: {
       name: "PROJECT-K",
       model: <BoardKey nodes={nodes} materials={materials} />,
       camera: <PerspectiveCamera makeDefault position={[-2.7, 7, 8]} />,
       image: keyImage,
+      text: { 0: "R3F", 1: "GSAP", 2: "" },
     },
     GoKey: {
       name: "SHAPE OF GO",
       model: <GoKey nodes={nodes} materials={materials} />,
-      camera: <PerspectiveCamera makeDefault position={[3.5, 6.5, 10]} />,
+      camera: <PerspectiveCamera makeDefault position={[3.5, 6.5, 11]} />,
       image: keyImage,
+      text: { 0: "ThreeJS", 1: "HTML/CSS", 2: "GSAP" },
     },
     EightBall: {
       name: "OTHERS",
       model: <EightBallKey nodes={nodes} materials={materials} />,
       camera: <PerspectiveCamera makeDefault position={[0.2, 0, 10]} />,
       image: keyImage,
+      text: { 0: "React", 1: "Shaders", 2: "Software" },
     },
   };
 
   return (
     <div className="mx-width relative z-50">
-      <div className="relative text-secondary">
-        <h1
+      <div className="relative text-secondary h-screen flex flex-wrap">
+        <Header />
+        {/* <h1
           className="glitch glow-title font-display absolute -top-12 right-1 tracking-tight"
           data-text="FRONTENDEVELOPER"
         >
           FRONTENDEVELOPER
-        </h1>
-        <View className="h-screen mx-width ">
+        </h1> */}
+        <Canvas
+          style={{
+            position: "relative",
+            top: 0,
+            bottom: 0,
+            left: 0,
+            right: 0,
+            overflow: "hidden",
+          }}
+        >
           <Common />
-          <Keys position={[0.23, -7.7, 1]} />
-          <PerspectiveCamera makeDefault position={[0, 0, 16]} />
-        </View>
+          <Keys position={[0.23, -7.7, 0]} />
+          <PerspectiveCamera makeDefault position={[0, 0, 15]} />
+        </Canvas>
       </div>
       <Slides slidesData={slidesData} />
 
@@ -152,21 +119,6 @@ export default function MyCanvas() {
             </View>
           </div> */}
       {/* Fixed Canvas */}
-      <Canvas
-        style={{
-          position: "fixed",
-          top: 0,
-          bottom: 0,
-          left: 0,
-          right: 0,
-          overflow: "hidden",
-        }}
-        eventSource={document.getElementById("root")}
-        className="container1 w-screen h-screen"
-      >
-        <View.Port />
-        <Preload all />
-      </Canvas>
     </div>
   );
 }
