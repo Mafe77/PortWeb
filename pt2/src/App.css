@@ -269,3 +269,11 @@ nav>[class*=menu] {
   padding: 1rem;
   white-space: pre;
 }
+
+.circle {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background-color: var(--color-secondary);
+  z-index: 50;
+}

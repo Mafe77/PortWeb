@@ -1,4 +1,5 @@
 import "./App.css";
+import Footer from "./components/Footer.jsx";
 import MyCanvas from "./components/MyCanvas.jsx";
 import NavBarV2 from "./components/NavBarV2.jsx";
 
@@ -25,6 +26,9 @@ function App() {
         {/* End of Background */}
         <MyCanvas />
       </main>
+      <footer>
+        <Footer />
+      </footer>
 
       <svg>
         <filter id="noiseFilter">

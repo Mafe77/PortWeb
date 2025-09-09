@@ -1,20 +1,13 @@
 import "../App.css";
 import Keys from "./Keys.jsx";
 import { Canvas, extend, useFrame } from "@react-three/fiber";
-import {
-  View,
-  PerspectiveCamera,
-  Environment,
-  Preload,
-  Lightformer,
-} from "@react-three/drei";
+import { PerspectiveCamera, Environment, Lightformer } from "@react-three/drei";
 import useKeysModel from "./Keychains/KeyLoader.jsx";
 import { EightBallKey } from "./Keychains/EightBallKey.jsx";
 import { BoardKey } from "./Keychains/BoardKey.jsx";
 import { useRef, useEffect } from "react";
 import { GoKey } from "./Keychains/GoKey.jsx";
 import keyImage from "../assets/placeholder2.png";
-import DottedSlide from "./DottedSlide.jsx";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Slides from "./Slides.jsx";
@@ -87,12 +80,6 @@ export default function MyCanvas() {
         id="home"
       >
         <Header />
-        {/* <h1
-          className="glitch glow-title font-display absolute -top-12 right-1 tracking-tight"
-          data-text="FRONTENDEVELOPER"
-        >
-          FRONTENDEVELOPER
-        </h1> */}
         <Canvas
           style={{
             position: "relative",
@@ -111,25 +98,6 @@ export default function MyCanvas() {
       <section id="projects">
         <Slides slidesData={slidesData} />
       </section>
-
-      <section id="contact">
-        <div className="h-[300px] text-5xl text-secondary flex justify-center pt-50">
-          footer WIP
-        </div>
-      </section>
-
-      {/* Slide 4
-          <div className="slide flex-shrink-0 h-[80%] relative border-2 border-green-600">
-            <div className="slide-title relative border-2 text-6xl float-end">
-              Info
-            </div>
-            <View className="absolute inset-0 border-2 ">
-              <PerspectiveCamera makeDefault position={[0, -1, 10]} />
-              <Common />
-              <Keys2 position={[-16, -8.3, 0]} />
-            </View>
-          </div> */}
-      {/* Fixed Canvas */}
     </div>
   );
 }

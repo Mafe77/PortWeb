@@ -1,10 +1,20 @@
+import { useRef } from "react";
+import { useFrame } from "@react-three/fiber";
+
 export function HotelKey({ nodes, materials, ...props }) {
+  const innerRef = useRef();
+
+  useFrame((state, delta) => {
+    const rotationDelta = delta;
+    innerRef.current.rotation.z += rotationDelta * 0.2;
+  });
+
   return (
     <group
       name="HotelKey"
-      position={[16.018, 9.693, 0.728]}
       rotation={[-1.595, 0, -2.927]}
       scale={0.511}
+      ref={innerRef}
     >
       <mesh
         name="ring001"
