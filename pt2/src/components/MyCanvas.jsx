@@ -8,6 +8,8 @@ import { BoardKey } from "./Keychains/BoardKey.jsx";
 import { useRef, useEffect } from "react";
 import { GoKey } from "./Keychains/GoKey.jsx";
 import keyImage from "../assets/placeholder2.png";
+import Atama1 from "../assets/Atama1.png";
+import SPG1 from "../assets/SPG1.png";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Slides from "./Slides.jsx";
@@ -51,21 +53,21 @@ export default function MyCanvas() {
 
   const slidesData = {
     Key: {
-      name: "PROJECT-K",
+      name: "PROJECT -- [ATAMA]",
       model: <BoardKey nodes={nodes} materials={materials} />,
       camera: <PerspectiveCamera makeDefault position={[-2.7, 7, 8]} />,
-      image: keyImage,
-      text: { 0: "R3F", 1: "GSAP", 2: "" },
+      image: Atama1,
+      text: { 0: "MERN", 1: "Figma", 2: "Tailwind" },
     },
     GoKey: {
-      name: "SHAPE OF GO",
+      name: "PROJECT -- [SHAPES OF GO]",
       model: <GoKey nodes={nodes} materials={materials} />,
       camera: <PerspectiveCamera makeDefault position={[3.5, 6.5, 11]} />,
-      image: keyImage,
+      image: SPG1,
       text: { 0: "ThreeJS", 1: "HTML/CSS", 2: "GSAP" },
     },
     EightBall: {
-      name: "OTHERS",
+      name: "-- [ARCHIVE]",
       model: <EightBallKey nodes={nodes} materials={materials} />,
       camera: <PerspectiveCamera makeDefault position={[0.2, 0, 10]} />,
       image: keyImage,

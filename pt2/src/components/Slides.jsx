@@ -98,7 +98,7 @@ function Slide({ slide, index }) {
       }`}
     >
       {/* Header */}
-      <div className="w-full border-b-1 h-10 flex justify-between px-10 text-lg font-display bg-[#060606] z-50 text-secondary">
+      <div className="w-full border-b-1 h-10 flex justify-between px-10 text-lg font-display bg-[#060606] z-20 text-secondary">
         <h2 className="relative top-1 font-medium glow-sub">{slide.name}</h2>
         <button className="border-1 px-2 my-1 rounded-lg hover:bg-secondary hover:text-primary">
           Explore
@@ -139,7 +139,7 @@ function Slide({ slide, index }) {
 
         <img
           src={slide.image}
-          className="relative h-[92%] w-[58%] border-x-1 border-secondary"
+          className="relative -top-1 h-[92%] w-[57%] border-x-2 border-[#6698f2] opacity-80"
         />
 
         <div className="text-secondary flex flex-col text-3xl w-[21%] glow-title pl-5 css-typing">

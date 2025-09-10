@@ -18,13 +18,19 @@ function Footer() {
   return (
     <section id="contact">
       <div className="mx-width h-[600px] text-5xl text-secondary flex flex-col border-1 relative top-10">
+        {/* Circle deco begin (topdiv)*/}
         <div className="circle absolute -top-[0.10em] -right-[.12em]"></div>
         <div className="circle absolute -top-[0.10em] -left-[.10em]"></div>
         <div className="circle absolute -bottom-[0.07em] -right-[.12em]"></div>
         <div className="circle absolute -bottom-[0.07em] -left-[.10em]"></div>
+        <div className="circle absolute -bottom-[0.07em] left-[8.85em]"></div>
+        {/* Circle deco end (topdiv)*/}
         <div className="relative border-b-1 h-18 w-full font-display bg-[#060606]">
+          {/* Circle deco begin (botdiv) */}
+          <div className="circle absolute -bottom-[.10em] left-[8.862em]"></div>
           <div className="circle absolute -bottom-[.10em] -right-[.12em]"></div>
           <div className="circle absolute -bottom-[.10em] -left-[.10em]"></div>
+          {/* Circle deco end (botdiv) */}
           <span className="text-2xl relative left-10 glow-sub">
             SUBJECT M-24
           </span>

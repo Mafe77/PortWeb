@@ -5,6 +5,10 @@ function NavBarV2() {
   const active = "text-primary bg-secondary";
   return (
     <nav className="mx-width flex flex-row justify-between text-secondary glow-sub ">
+      <div className="circle absolute -top-[0.25em] -right-[.30em]"></div>
+      <div className="circle absolute -top-[0.25em] -left-[.30em]"></div>
+      <div className="circle absolute -bottom-[0.25em] -right-[.30em]"></div>
+      <div className="circle absolute -bottom-[0.25em] -left-[.30em]"></div>
       <div className="text-sm relative -top-2">[-- PORTFOLIO 2025 ]</div>
       <div className="text-lg flex justify-between gap-10 relative -top-2 glow right-9">
         <a href="#home" className="hover:text-primary hover:bg-secondary px-2">
