@@ -13,9 +13,11 @@ import { EightBallKey } from "./Keychains/EightBallKey.jsx";
 import { BoardKey } from "./Keychains/BoardKey.jsx";
 import { useRef, useEffect, Suspense, useState } from "react";
 import { GoKey } from "./Keychains/GoKey.jsx";
-import keyImage from "../assets/placeholder2.png";
 import Atama1 from "../assets/Atama1.png";
 import Atama2 from "../assets/Atama2.png";
+import AISD1 from "../assets/AISD1.png";
+import AISD2 from "../assets/AISD2.png";
+import AISD3 from "../assets/AISD3.png";
 import SPG1 from "../assets/SPG1.png";
 import SPG2 from "../assets/SPG2.png";
 import SPG3 from "../assets/SPG3.png";
@@ -64,11 +66,11 @@ export default function MyCanvas() {
 
   const slidesData = {
     Key: {
-      name: "PROJECT -- [ATAMA]",
+      name: "PROJECT -- [AI FOR SAFE DRIVING]",
       model: <BoardKey nodes={nodes} materials={materials} />,
       camera: <PerspectiveCamera makeDefault position={[-2.7, 7, 8]} />,
-      image: [Atama1, Atama2],
-      text: { 0: "MERN", 1: "Figma", 2: "Tailwind" },
+      image: [AISD1, AISD2, AISD3],
+      text: { 0: "PERN", 1: "Figma", 2: "Websockets" },
     },
     GoKey: {
       name: "PROJECT -- [SHAPES OF GO]",
@@ -81,7 +83,7 @@ export default function MyCanvas() {
       name: "-- [ARCHIVE]",
       model: <EightBallKey nodes={nodes} materials={materials} />,
       camera: <PerspectiveCamera makeDefault position={[0.2, 0, 10]} />,
-      image: [SPG1, SPG2, SPG3, SPG4],
+      image: [Atama1, SPG2, SPG3, SPG4],
       text: { 0: "Atama", 1: "Shaders", 2: "AISD" },
     },
   };

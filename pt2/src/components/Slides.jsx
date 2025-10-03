@@ -142,7 +142,7 @@ function Slide({ slide, index }) {
 
         <div className="relative h-[94%] w-[57%] border-x-2 border-[#6698f2] z-50">
           <TbArrowBadgeLeft
-            className="absolute left-2 text-5xl text-primary hover:text-secondary cursor-pointer select-none top-[40%]"
+            className="absolute left-2 text-5xl text-primary hover:text-tertuary cursor-pointer select-none top-[40%]"
             onClick={() =>
               setThumbImage(
                 (prev) => (prev - 1 + slide.image.length) % slide.image.length
@@ -155,7 +155,7 @@ function Slide({ slide, index }) {
           <img
             src={slide.image[thumbImage]}
             alt="Slide"
-            className="h-full select-none"
+            className="h-full select-none w-full"
             draggable={false}
           />
 

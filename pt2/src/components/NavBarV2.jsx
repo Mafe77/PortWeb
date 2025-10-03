@@ -1,5 +1,5 @@
 import "../App.css";
-import { PiBatteryFullDuotone } from "react-icons/pi";
+// import { PiBatteryFullDuotone } from "react-icons/pi";
 
 function NavBarV2() {
   const active = "text-primary bg-secondary";
@@ -28,7 +28,7 @@ function NavBarV2() {
         </a>
       </div>
       <div className="text-4xl relative top-1 p-0 m-0">
-        <PiBatteryFullDuotone />
+        {/* <PiBatteryFullDuotone /> */}
       </div>
     </nav>
   );
