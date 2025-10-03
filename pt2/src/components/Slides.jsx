@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Canvas, extend, useFrame } from "@react-three/fiber";
@@ -12,6 +12,7 @@ import {
 } from "@react-three/drei";
 import { EffectComposer, ASCII } from "@react-three/postprocessing";
 import DottedSlide from "./DottedSlide";
+import { TbArrowBadgeLeft, TbArrowBadgeRight } from "react-icons/tb";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -91,6 +92,8 @@ function Slide({ slide, index }) {
     };
   }, [index]);
 
+  let [thumbImage, setThumbImage] = useState(0);
+
   return (
     <DottedSlide
       className={`slide-${index} border-secondary border-1 h-[500px] w-[90%] bg-primary rounded-sm ${
@@ -137,10 +140,34 @@ function Slide({ slide, index }) {
           </Canvas>
         </div>
 
-        <img
-          src={slide.image}
-          className="relative -top-1 h-[92%] w-[57%] border-x-2 border-[#6698f2] opacity-80"
-        />
+        <div className="relative h-[94%] w-[57%] border-x-2 border-[#6698f2] z-50">
+          <TbArrowBadgeLeft
+            className="absolute left-2 text-5xl text-primary hover:text-secondary cursor-pointer select-none top-[40%]"
+            onClick={() =>
+              setThumbImage(
+                (prev) => (prev - 1 + slide.image.length) % slide.image.length
+              )
+            }
+            role="button"
+            tabIndex={0}
+          />
+
+          <img
+            src={slide.image[thumbImage]}
+            alt="Slide"
+            className="h-full select-none"
+            draggable={false}
+          />
+
+          <TbArrowBadgeRight
+            className="absolute right-2 text-5xl text-primary hover:text-tertuary cursor-pointer select-none top-[40%]"
+            onClick={() =>
+              setThumbImage((prev) => (prev + 1) % slide.image.length)
+            }
+            role="button"
+            tabIndex={0}
+          />
+        </div>
 
         <div className="text-secondary flex flex-col text-3xl w-[21%] glow-title pl-5 css-typing">
           {Object.values(slide.text).map((text, i) => (

@@ -1,19 +1,30 @@
 import "../App.css";
 import Keys from "./Keys.jsx";
 import { Canvas, extend, useFrame } from "@react-three/fiber";
-import { PerspectiveCamera, Environment, Lightformer } from "@react-three/drei";
+import {
+  PerspectiveCamera,
+  Environment,
+  Lightformer,
+  Html,
+  useProgress,
+} from "@react-three/drei";
 import useKeysModel from "./Keychains/KeyLoader.jsx";
 import { EightBallKey } from "./Keychains/EightBallKey.jsx";
 import { BoardKey } from "./Keychains/BoardKey.jsx";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, Suspense, useState } from "react";
 import { GoKey } from "./Keychains/GoKey.jsx";
 import keyImage from "../assets/placeholder2.png";
 import Atama1 from "../assets/Atama1.png";
+import Atama2 from "../assets/Atama2.png";
 import SPG1 from "../assets/SPG1.png";
+import SPG2 from "../assets/SPG2.png";
+import SPG3 from "../assets/SPG3.png";
+import SPG4 from "../assets/SPG4.png";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Slides from "./Slides.jsx";
 import Header from "./Header.jsx";
+import { Perf } from "r3f-perf";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -56,24 +67,33 @@ export default function MyCanvas() {
       name: "PROJECT -- [ATAMA]",
       model: <BoardKey nodes={nodes} materials={materials} />,
       camera: <PerspectiveCamera makeDefault position={[-2.7, 7, 8]} />,
-      image: Atama1,
+      image: [Atama1, Atama2],
       text: { 0: "MERN", 1: "Figma", 2: "Tailwind" },
     },
     GoKey: {
       name: "PROJECT -- [SHAPES OF GO]",
       model: <GoKey nodes={nodes} materials={materials} />,
       camera: <PerspectiveCamera makeDefault position={[3.5, 6.5, 11]} />,
-      image: SPG1,
+      image: [SPG1, SPG2, SPG3, SPG4],
       text: { 0: "ThreeJS", 1: "HTML/CSS", 2: "GSAP" },
     },
     EightBall: {
       name: "-- [ARCHIVE]",
       model: <EightBallKey nodes={nodes} materials={materials} />,
       camera: <PerspectiveCamera makeDefault position={[0.2, 0, 10]} />,
-      image: keyImage,
+      image: [SPG1, SPG2, SPG3, SPG4],
       text: { 0: "Atama", 1: "Shaders", 2: "AISD" },
     },
   };
+
+  function Loader() {
+    const { progress } = useProgress();
+    return (
+      <Html center>
+        <div style={{ color: "#B3CBF6" }}>Loading {progress.toFixed(0)}%</div>
+      </Html>
+    );
+  }
 
   return (
     <div className="mx-width relative z-50">
@@ -92,9 +112,12 @@ export default function MyCanvas() {
             overflow: "hidden",
           }}
         >
-          <Common />
-          <Keys position={[0.23, -7.7, 0]} />
-          <PerspectiveCamera makeDefault position={[0, 0, 15]} />
+          {/* <Perf position="bottom-left" /> */}
+          <Suspense fallback={<Loader />}>
+            <Common />
+            <Keys position={[0.23, -7.7, 0]} />
+            <PerspectiveCamera makeDefault position={[0, 0, 15]} />
+          </Suspense>
         </Canvas>
       </section>
       <section id="projects">

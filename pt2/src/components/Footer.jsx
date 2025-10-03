@@ -69,33 +69,33 @@ function Footer() {
               <p>Maria Talhaferro</p>
             </div>
             <div className="border-b-1 w-full flex justify-between px-10 pt-4 pb-4">
-              <p>Function</p>
+              <p>FUNCTION</p>
               <p>Frontend Developer</p>
             </div>
             <div className="border-b-1 w-full flex justify-between px-10 pt-4 pb-4">
-              <p>Skills</p>
+              <p>SKILLS</p>
               <div className="flex flex-col text-end">
                 <p className="pt-5">{""}</p>
                 {/* <p>Programming</p> */}
                 <p className="flex justify-between">
                   <span className="">★★★</span>
-                  <p>Figma</p>
+                  <span>Figma</span>
                 </p>
                 <p className="flex justify-between">
                   <span className="pr-20">★★★★</span>
-                  <p>React</p>
+                  <span>React</span>
                 </p>
                 <p className="flex justify-between">
                   <span className="">★★★</span>
-                  <p>ThreeJS</p>
+                  <span>ThreeJS</span>
                 </p>
                 <p className="flex justify-between">
                   <span className="">★★★★★</span>
-                  <p>Python</p>
+                  <span>Python</span>
                 </p>
                 <p className="flex justify-between">
                   <span className="">★★★★</span>
-                  <p>JavaScript</p>
+                  <span>JavaScript</span>
                 </p>
               </div>
             </div>
