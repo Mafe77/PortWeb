@@ -15,7 +15,29 @@ export default function Model(props) {
   const [showTitle, setShowTitle] = useState(false);
   const [pos, setPos] = useState({ x: 0, y: 0 });
 
+  const [disableAnimations, setDisableAnimations] = useState(false);
+  const [rendererInfo, setRendererInfo] = useState("");
+
+  useEffect(() => {
+    try {
+      const gl = document.createElement("canvas").getContext("webgl");
+      const debugInfo = gl.getExtension("WEBGL_debug_renderer_info");
+      const renderer = debugInfo
+        ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL)
+        : "unknown";
+
+      // Disable animations for known slow/CPU renderers
+      if (/swiftshader|microsoft basic/i.test(renderer)) {
+        setDisableAnimations(true);
+      }
+    } catch {
+      setDisableAnimations(true); // if WebGL context fails, disable
+    }
+  }, []);
+
   useFrame((state) => {
+    if (disableAnimations) return;
+
     if (
       !boardKeyRef.current ||
       !goKeyRef.current ||

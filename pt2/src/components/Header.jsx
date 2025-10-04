@@ -5,6 +5,8 @@ const textAscii =
 
 export default function Header() {
   return (
-    <pre className="text-art text-[2.03em] absolute glow-sub">{textAscii}</pre>
+    <pre className="text-art absolute glow-sub mx-width 2xl:text-[1.64rem] lg:text-[1.12rem] overflow-clip">
+      {textAscii}
+    </pre>
   );
 }

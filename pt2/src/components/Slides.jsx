@@ -96,7 +96,7 @@ function Slide({ slide, index }) {
 
   return (
     <DottedSlide
-      className={`slide-${index} border-secondary border-1 h-[500px] w-[90%] bg-primary rounded-sm ${
+      className={`slide-${index} border-secondary border-1 h-fit w-[90%] bg-primary rounded-sm ${
         index > 0 ? "mt-10" : ""
       }`}
     >

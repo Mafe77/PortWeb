@@ -1,5 +1,6 @@
 import "../App.css";
 import Keys from "./Keys.jsx";
+import KeysTry from "./KeysTry.jsx";
 import { Canvas, extend, useFrame } from "@react-three/fiber";
 import {
   PerspectiveCamera,
@@ -29,6 +30,18 @@ import Header from "./Header.jsx";
 import { Perf } from "r3f-perf";
 
 gsap.registerPlugin(ScrollTrigger);
+
+function isWebGLAvailable() {
+  try {
+    const canvas = document.createElement("canvas");
+    return !!(
+      window.WebGLRenderingContext &&
+      (canvas.getContext("webgl") || canvas.getContext("experimental-webgl"))
+    );
+  } catch (e) {
+    return false;
+  }
+}
 
 export default function MyCanvas() {
   const { nodes, materials } = useKeysModel();
@@ -100,7 +113,7 @@ export default function MyCanvas() {
   return (
     <div className="mx-width relative z-50">
       <section
-        className="relative text-secondary h-screen flex flex-wrap"
+        className="relative text-secondary h-screen flex flex-wrap justify-center"
         id="home"
       >
         <Header />
@@ -117,7 +130,8 @@ export default function MyCanvas() {
           {/* <Perf position="bottom-left" /> */}
           <Suspense fallback={<Loader />}>
             <Common />
-            <Keys position={[0.23, -7.7, 0]} />
+            {/* <Keys position={[0.23, -7.7, 0]} /> */}
+            <KeysTry position={[0.23, -7.7, 0]} />
             <PerspectiveCamera makeDefault position={[0, 0, 15]} />
           </Suspense>
         </Canvas>
