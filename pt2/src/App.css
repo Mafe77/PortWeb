@@ -262,14 +262,14 @@ nav>[class*=menu] {
 }
 
 
-.text-art {
+/* .text-art {
   font-family: monospace;
   line-height: 1;
   position: absolute;
-  top: 4%;
   left: 50%;
-  transform: translate(-50%, -50%);
-}
+  transform: translateX(-50%);
+  top: 4%;
+} */
 
 .circle {
   width: 9px;
