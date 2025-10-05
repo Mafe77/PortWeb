@@ -1,5 +1,5 @@
 import { useGLTF, Html } from "@react-three/drei";
-import { useFrame } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { useRef, useState } from "react";
 
@@ -11,68 +11,121 @@ export default function AnimatedModel(props) {
   const [showTitle, setShowTitle] = useState(false);
   const [pos, setPos] = useState({ x: 0, y: 0 });
 
+  const { camera, mouse, scene } = useThree();
+  const raycaster = new THREE.Raycaster();
+
+  const boardKey = [
+    nodes.Cube005,
+    nodes.Cube005_1,
+    nodes.Cube005_2,
+    nodes.Cube005_3,
+  ];
+
+  const EightBallKey = [
+    nodes.Roundcube001,
+    nodes.Roundcube001_1,
+    nodes.Roundcube001_2,
+  ];
+
+  const GoKey = [nodes.Sphere001, nodes.Sphere001_1, nodes.Sphere001_2];
+
+  const HotelKey = [nodes.Plane001, nodes.Plane001_1, nodes.Plane001_2];
+
+  // Manually changing boardKey materials
+  boardKey[0].material = new THREE.MeshBasicMaterial({
+    color: "gray",
+    transparent: true,
+    opacity: 0.5,
+  });
+  boardKey[3].material = new THREE.MeshStandardMaterial({ color: "#6E88B3" });
+
+  const allMeshes = [
+    ...boardKey,
+    ...GoKey,
+    ...EightBallKey,
+    ...HotelKey,
+  ].filter(Boolean);
+
+  const moveSpeed = 0.05; // How quickly keys move toward target rotation
+
+  // Rotation helper functions
+  function applyRotationY(meshes, rotation) {
+    meshes.forEach((m) => m && (m.rotation.y = rotation));
+  }
+  function applyRotationZ(meshes, rotation) {
+    meshes.forEach((m) => m && (m.rotation.z = rotation));
+  }
+
   useFrame((state) => {
     if (!groupRef.current) return;
 
-    const amount = Math.sin(state.clock.elapsedTime * 0.5);
+    // Clock
+    const t = Math.sin(state.clock.elapsedTime * 0.5);
 
-    // Access nodes dynamically
-    const boardKey0 = nodes.Cube005;
-    boardKey0.material = new THREE.MeshBasicMaterial({
-      color: "gray",
-      transparent: true,
-      opacity: 0.5,
-    });
-    const boardKey3 = nodes.Cube005_3;
-    boardKey3.material = new THREE.MeshStandardMaterial({ color: "#6E88B3" });
-    // const boardKey1 = nodes.Cube005_1;
-    // const boardKey2 = nodes.Cube005_2;
-    // const boardKey3 = nodes.Cube005_3;
+    // Raycasting
+    raycaster.setFromCamera(mouse, camera);
+    const intersects = raycaster.intersectObjects(allMeshes, true);
 
-    function applyRotationY(meshes, rotation) {
-      meshes.forEach((m) => m && (m.rotation.y = rotation));
+    let newHover = null;
+    if (intersects.length > 0) {
+      const intersected = intersects[0].object;
+
+      if (boardKey.includes(intersected)) newHover = "boardKey";
+      else if (EightBallKey.includes(intersected)) newHover = "EightBallKey";
+      else if (GoKey.includes(intersected)) newHover = "GoKey";
+      else if (HotelKey.includes(intersected)) newHover = "HotelKey";
     }
 
-    function applyRotationZ(meshes, rotation) {
-      meshes.forEach((m) => m && (m.rotation.z = rotation));
+    if (hoveredKey !== newHover) {
+      setHoveredKey(newHover);
+      setShowTitle(!!newHover);
     }
 
-    // Board Key
-    applyRotationY(
-      [nodes.Cube005, nodes.Cube005_1, nodes.Cube005_2, nodes.Cube005_3],
-      amount * -0.07
-    );
+    // --- Rotation offsets depending on hover ---
+    const offsets = {
+      boardKey: 0,
+      goKey: 0,
+      eightBall: 0,
+      hotelKey: 0,
+    };
 
-    // EightBall Key
-    applyRotationZ(
-      [nodes.Roundcube001, nodes.Roundcube001_1, nodes.Roundcube001_2],
-      0 + amount * -0.07
-    );
+    if (hoveredKey === "GoKey") {
+      offsets.boardKey = -0.3;
+      offsets.eightBall = 0.3;
+      offsets.hotelKey = 0.5;
+    } else if (hoveredKey === "boardKey") {
+      offsets.goKey = -0.3;
+      offsets.eightBall = 0.5;
+      offsets.hotelKey = 0.5;
+    } else if (hoveredKey === "EightBallKey") {
+      offsets.goKey = 0.3;
+      offsets.boardKey = -0.3;
+      offsets.hotelKey = 0.5;
+    } else if (hoveredKey === "HotelKey") {
+      offsets.eightBall = -0.5;
+      offsets.goKey = 0.3;
+      offsets.boardKey = -0.3;
+    }
 
-    //Go Key
-    applyRotationZ(
-      [nodes.Sphere001, nodes.Sphere001_1, nodes.Sphere001_2],
-      0 + amount * 0.07
-    );
+    // --- Smooth rotation toward target values ---
+    const smoothRotateY = (meshes, target, base = 0) => {
+      meshes.forEach((m) => {
+        if (!m) return;
+        m.rotation.y += (target - m.rotation.y + base) * moveSpeed;
+      });
+    };
+    const smoothRotateZ = (meshes, target, base = 0) => {
+      meshes.forEach((m) => {
+        if (!m) return;
+        m.rotation.z += (target - m.rotation.z + base) * moveSpeed;
+      });
+    };
 
-    //Hotel Key
-    applyRotationY(
-      [nodes.Plane001, nodes.Plane001_1, nodes.Plane001_2],
-      0 + amount * -0.07
-    );
-
-    // Hover offsets
-    // const offsets = {
-    //   boardKey: hoveredKey === "boardKey" ? 0.5 : 0,
-    //   goKey: hoveredKey === "goKey" ? -0.3 : 0,
-    //   eightBall: hoveredKey === "eightBall" ? 0.2 : 0,
-    //   hotelKey: hoveredKey === "hotelKey" ? -0.1 : 0,
-    // };
-
-    // if (boardKey) boardKey.position.x = offsets.boardKey;
-    // if (goKey) goKey.position.x = offsets.goKey;
-    // if (eightBall) eightBall.position.x = offsets.eightBall;
-    // if (hotelKey) hotelKey.position.x = offsets.hotelKey;
+    // Apply the smoothed rotations + gentle breathing animation
+    smoothRotateY(boardKey, offsets.boardKey + 0.01 + t * -0.09);
+    smoothRotateZ(GoKey, offsets.goKey + 0 + t * 0.07);
+    smoothRotateZ(EightBallKey, offsets.eightBall + 0 + t * 0.07);
+    smoothRotateY(HotelKey, offsets.hotelKey + 0 + t * 0.09);
   });
 
   return (
