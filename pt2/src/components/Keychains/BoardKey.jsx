@@ -3,18 +3,9 @@ import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 
 export function BoardKey({ nodes, materials, ...props }) {
-  const innerRef = useRef();
-  const innerRef2 = useRef();
-  //   useFrame((state, delta) => {
-  //     const rotationDelta = delta;
-  //     if (innerRef.current) innerRef.current.rotation.z += rotationDelta;
-  //     if (innerRef2.current) innerRef2.current.rotation.z += rotationDelta;
-  //   });
-
   return (
     <group>
       <group
-        ref={innerRef}
         name="Key"
         position={[-2.38, 9.416, 0.189]}
         rotation={[-1.595, 0, -2.927]}
@@ -43,7 +34,6 @@ export function BoardKey({ nodes, materials, ...props }) {
         />
       </group>
       <mesh
-        ref={innerRef2}
         name="Keycover"
         castShadow
         receiveShadow

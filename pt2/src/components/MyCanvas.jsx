@@ -14,10 +14,11 @@ import { EightBallKey } from "./Keychains/EightBallKey.jsx";
 import { BoardKey } from "./Keychains/BoardKey.jsx";
 import { useRef, useEffect, Suspense, useState } from "react";
 import { GoKey } from "./Keychains/GoKey.jsx";
-import Atama1 from "../assets/Atama1.png";
-import Atama2 from "../assets/Atama2.png";
+import KEV1 from "../assets/KEV1.png";
 import AISD1 from "../assets/AISD1.png";
 import AISD2 from "../assets/AISD2.png";
+import ATAMA1 from "../assets/Atama1.png";
+import ATAMA2 from "../assets/Atama2.png";
 import AISD3 from "../assets/AISD3.png";
 import SPG1 from "../assets/SPG1.png";
 import SPG2 from "../assets/SPG2.png";
@@ -79,11 +80,12 @@ export default function MyCanvas() {
 
   const slidesData = {
     Key: {
-      name: "PROJECT -- [AI FOR SAFE DRIVING]",
+      name: "PROJECT -- [ATAMA]",
       model: <BoardKey nodes={nodes} materials={materials} />,
       camera: <PerspectiveCamera makeDefault position={[-2.7, 7, 8]} />,
-      image: [AISD1, AISD2, AISD3],
-      text: { 0: "PERN", 1: "Figma", 2: "Websockets" },
+      image: [ATAMA1, ATAMA2],
+      text: { 0: "MERN", 1: "Tailwind", 3: "Figma" },
+      gitHub: "https://github.com/paulvinueza30/group-20-large-project",
     },
     GoKey: {
       name: "PROJECT -- [SHAPES OF GO]",
@@ -91,13 +93,15 @@ export default function MyCanvas() {
       camera: <PerspectiveCamera makeDefault position={[3.5, 6.5, 11]} />,
       image: [SPG1, SPG2, SPG3, SPG4],
       text: { 0: "ThreeJS", 1: "HTML/CSS", 2: "GSAP" },
+      gitHub: "#",
     },
     EightBall: {
-      name: "-- [ARCHIVE]",
+      name: "PROJECT -- [AI FOR SAFE DRIVING]",
       model: <EightBallKey nodes={nodes} materials={materials} />,
       camera: <PerspectiveCamera makeDefault position={[0.2, 0, 10]} />,
-      image: [Atama1, SPG2, SPG3, SPG4],
-      text: { 0: "Atama", 1: "Shaders", 2: "AISD" },
+      image: [AISD1, AISD2, AISD3],
+      text: { 0: "PERN", 1: "Websockets", 2: "Figma" },
+      gitHub: "https://github.com/colemaring/sd1",
     },
   };
 

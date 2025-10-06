@@ -5,7 +5,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Canvas, extend, useFrame } from "@react-three/fiber";
 import { EffectComposer, ASCII } from "@react-three/postprocessing";
 import DottedSlide from "./DottedSlide";
-import { TbArrowBadgeLeft, TbArrowBadgeRight } from "react-icons/tb";
+import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -96,9 +96,12 @@ function Slide({ slide, index }) {
       {/* Header */}
       <div className="w-full border-b-1 h-10 flex justify-between px-10 text-lg font-display bg-[#060606] z-20 text-secondary">
         <h2 className="relative top-1 font-medium glow-sub">{slide.name}</h2>
-        <button className="border-1 px-2 my-1 rounded-lg hover:bg-secondary hover:text-primary">
+        <a
+          className="border-1 px-2 my-1 rounded-lg hover:bg-secondary hover:text-primary"
+          href={slide.gitHub}
+        >
           Explore
-        </button>
+        </a>
       </div>
 
       {/* Content */}
@@ -134,7 +137,7 @@ function Slide({ slide, index }) {
         </div>
 
         <div className="relative w-[57%] border-x-2 border-[#6698f2] z-50 top-3 h-[400px] overflow-hidden flex items-center justify-center">
-          <TbArrowBadgeLeft
+          <IoIosArrowBack
             className="absolute left-2 text-5xl text-primary hover:text-tertuary cursor-pointer select-none top-1/2 -translate-y-1/2"
             onClick={() =>
               setThumbImage(
@@ -150,7 +153,7 @@ function Slide({ slide, index }) {
             draggable={false}
           />
 
-          <TbArrowBadgeRight
+          <IoIosArrowForward
             className="absolute right-2 text-5xl text-primary hover:text-tertuary cursor-pointer select-none top-1/2 -translate-y-1/2"
             onClick={() =>
               setThumbImage((prev) => (prev + 1) % slide.image.length)
