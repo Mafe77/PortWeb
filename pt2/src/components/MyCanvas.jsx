@@ -22,6 +22,7 @@ import ATAMA2 from "../assets/Atama2.png";
 import AISD3 from "../assets/AISD3.png";
 import SPG1 from "../assets/SPG1-1.png";
 import SPG2 from "../assets/SPG2-1.png";
+import SPG3 from "../assets/SPG3-1.png";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Slides from "./Slides.jsx";
@@ -89,7 +90,7 @@ export default function MyCanvas() {
       name: "PROJECT -- [SHAPES OF GO]",
       model: <GoKey nodes={nodes} materials={materials} />,
       camera: <PerspectiveCamera makeDefault position={[3.5, 6.5, 11]} />,
-      image: [SPG1, SPG2],
+      image: [SPG2, SPG1, SPG3],
       text: { 0: "Pygame", 1: "AI", 2: "Python" },
       gitHub: "https://github.com/Mafe77/alphazero-go",
     },

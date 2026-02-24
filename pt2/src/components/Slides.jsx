@@ -149,7 +149,7 @@ function Slide({ slide, index }) {
           <img
             src={slide.image[thumbImage]}
             alt="Slide"
-            className="select-none w-full h-full object-cover"
+            className="select-none w-full h-full object-contain"
             draggable={false}
           />
 
